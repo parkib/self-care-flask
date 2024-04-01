@@ -127,9 +127,35 @@ class UserAPI:
                         "error": str(e),
                         "data": None
                 }, 500
+    class _Create(Resource):
+            def post(self):
+                body = request.get_json()
+                # Fetch data from the form
+                name = body.get('name')
+                uid = body.get('uid')
+                password = body.get('password')
+                dob = body.get('dob')
+                # exercise = body.get('exercise')
+                # tracking = body.get('tracking')
+                # coins = 0
+                # if exercise is not None:
+                #     new_user = User(name=name, uid=uid, password=password, dob=dob, exercise=exercise, tracking='', coins = coins)
+                # elif tracking is not None:
+                #     new_user = User(name=name, uid=uid, password=password, dob=dob, exercise = '', tracking=tracking, coins = coins)
+                # else: 
+                new_user = User(name=name, uid=uid, password=password, dob=dob)  
+                #exercise='', tracking='', coins = coins 
+                user = new_user.create()
+                # success returns json of user
+                if user:
+                    #return jsonify(user.read())
+                    return user.read()
+                # failure returns error
+                return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400
 
             
     # building RESTapi endpoint
     api.add_resource(_CRUD, '/')
+    api.add_resource(_Create, '/create')
     api.add_resource(_Security, '/authenticate')
     
