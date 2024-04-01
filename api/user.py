@@ -106,14 +106,13 @@ class UserAPI:
                                 secure=True,
                                 httponly=True,
                                 path='/',
-                                samesite='None'  # This is the key part for cross-site requests
-
-                                # domain="frontend.com"
+                                samesite='None',
+                                domain="jplip.github.io"
                                 )
                         return resp
                     except Exception as e:
                         return {
-                            "error": "Something went wrong",
+                            "error": "Something went wrong guys",
                             "message": str(e)
                         }, 500
                 return {
