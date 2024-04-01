@@ -1,119 +1,184 @@
+from flask import Blueprint, jsonify, Flask, request
+from flask_cors import CORS  # Import CORS
+import seaborn as sns
 import pandas as pd
-import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import OneHotEncoder
+from flask_restful import Api, Resource
 from sklearn.linear_model import LogisticRegression
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score
+from sklearn.preprocessing import OneHotEncoder
+import sqlite3
+from flask import Blueprint, jsonify, Flask, request
+from flask_restful import Api, Resource
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
+from sklearn import svm
+import numpy as np
+
+
+heart_api = Blueprint('heart_api', __name__,
+                   url_prefix='/api/heart')
+
+heart_api = Blueprint('heart_api', __name__, url_prefix='/api/heart')
+api = Api(heart_api)
+CORS(heart_api)
 
 class HeartModel:
+    """A class used to represent the Titanic Model for passenger survival prediction.
+    """
+    # a singleton instance of TitanicModel, created to train the model only once, while using it for prediction multiple times
+    ## underbar in Python means that it is not for general use - you need to use another accessor to get to it (it will be assigned something if you use the system appropriately)
     _instance = None
+
+
+    ## creating + cleaning + training of the instance
     
+    # constructor, used to initialize the TitanicModel
+    '''
+
+    '''
     def __init__(self):
+        # the titanic ML model
         self.model = None
         self.dt = None
-        self.features = ['age', 'sex', 'cp', 'trtpbs', 'chol', 'exng']
+        # define ML features and target
+        self.features = ['age', 'sex', 'cp', 'trtpbs', 'chol', 'exng' ]
         self.target = 'heart'
-        self.heart_data = None
-
-    def _clean(self, url):
-        # Load the dataset
+        # load the titanic dataset
+        url='https://drive.google.com/file/d/1_lvLY-3rlNZoOkJiCVYZIsXF2eT_swf1/view?usp=sharing'    
+        url='https://drive.google.com/uc?id=' + url.split('/')[-2]
         self.heart_data = pd.read_csv(url)
-        
+        #self.titanic_data = sns.load_dataset('titanic')
+        # one-hot encoder used to encode 'embarked' column
+        #self.encoder = OneHotEncoder(handle_unknown='ignore')
+
+    # clean the titanic dataset, prepare it for training
+    def _clean(self):
         # Drop unnecessary columns
         self.heart_data.drop(['fbs', 'restecg', 'thalachh', 'oldpeak'], axis=1, inplace=True)
-
-        # Convert boolean columns to integers
-        self.heart_data['sex'] = self.heart_data['sex'].apply(lambda x: 1 if x == 'male' else 0)
-        self.heart_data['exng'] = self.heart_data['exng'].apply(lambda x: 1 if x == 'Yes' else 0)
-    
-        # Drop rows with missing values
+        #self.stroke_data['gender'] = self.stroke_data['gender'].apply(lambda x: 1 if x == 'Male' else 0)
+        #self.stroke_data['alone'] = self.stroke_data['alone'].apply(lambda x: 1 if x == True else 0)
+        #self.stroke_data['Residence_type'] = self.stroke_data['Residence_type'].apply(lambda x: 1 if x == 'Urban' else 0)
+        #self.stroke_data['smoking_status'] = self.stroke_data['smoking_status'].apply(lambda x: 1 if x == 'smoked' else 0)
+        #self.stroke_data.dropna(subset=['embarked'], inplace=True)
         self.heart_data.dropna(inplace=True)
 
+    # train the titanic model, using logistic regression as key model, and decision tree to show feature importance
     def _train(self):
-        # Split the data into features and target
+        # split the data into features and target
         X = self.heart_data[self.features]
         y = self.heart_data[self.target]
         
-        # Perform train-test split
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
-        
-        # Train the logistic regression model
+        # perform train-test split
         self.model = LogisticRegression(max_iter=1000)
-        self.model.fit(X_train, y_train)
         
-        # Train a decision tree classifier
+        # train the model
+        self.model.fit(X, y)
+        
+        # train a decision tree classifier
         self.dt = DecisionTreeClassifier()
-        self.dt.fit(X_train, y_train)
-        
-        # Train Gaussian Naive Bayes
-        self.gnb = GaussianNB()
-        self.gnb.fit(X_train, y_train)
+        self.dt.fit(X, y)
         
     @classmethod
-    def get_instance(cls, url):
+    def get_instance(cls):
+        """ Gets, and conditionaly cleans and builds, the singleton instance of the TitanicModel.
+        The model is used for analysis on titanic data and predictions on the survival of theoritical passengers.
+        
+        Returns:
+            TitanicModel: the singleton _instance of the TitanicModel, which contains data and methods for prediction.
+        """        
+        # check for instance, if it doesn't exist, create it
         if cls._instance is None:
             cls._instance = cls()
-            cls._instance._clean(url)
+            cls._instance._clean()
             cls._instance._train()
+        # return the instance, to be used for prediction
         return cls._instance
 
-    def predict(self, individual):
-        individual_df = pd.DataFrame(individual, index=[0])
-        individual_df['sex'] = individual_df['sex'].apply(lambda x: 1 if x == 'Male' else 0)
-        individual_df['exng'] = individual_df['exng'].apply(lambda x: 1 if x == 'Yes' else 0)
-        heart = np.squeeze(self.model.predict_proba(individual_df))
-        return {'heart': heart}
+    def predict(self, heart):
+        """ Predict the survival probability of a passenger.
 
-    def feature_weights(self):
-        importances = self.dt.feature_importances_
-        return {feature: importance for feature, importance in zip(self.features, importances)}
+        Args:
+            passenger (dict): A dictionary representing a passenger. The dictionary should contain the following keys:
+                'pclass': The passenger's class (1, 2, or 3)
+                'sex': The passenger's sex ('male' or 'female')
+                'age': The passenger's age
+                'sibsp': The number of siblings/spouses the passenger has aboard
+                'parch': The number of parents/children the passenger has aboard
+                'fare': The fare the passenger paid
+                'embarked': The port at which the passenger embarked ('C', 'Q', or 'S')
+                'alone': Whether the passenger is alone (True or False)
 
-def initHeart():
-    url = 'https://drive.google.com/file/d/1kJcitXtlysIg1pCPQxV-lMSVTFsLWOkv'
-    HeartModel.get_instance(url)
-    
-def testHeart():
-    HeartModel_instance = HeartModel.get_instance(url)
-    
-    individual = {
-        'age': 14,
-        'sex': 'Male',
-        'cp': 2,
-        'trtpbs': 130,
-        'chol': 204,
-        'exng': 0,
-    }
-    
-
-    HeartModel = HeartModel.get_instance()
-    print(" Step 2:", HeartModel.get_instance.__doc__)
-   
-    # print the survival probability
-    print(" Step 3:", HeartModel.predict.__doc__)
-    probability = HeartModel.predict(individual)
-    print('\t Heart probability: {:.2%}',(probability.get('heart')))  
-    print()
-    
-    # print the feature weights in the prediction model
-    print(" Step 4:", HeartModel.feature_weights.__doc__)
-    importances = HeartModel.feature_weights()
-    for feature, importance in importances.items():
-        print("\t\t", feature, f"{importance:.2%}") # importance of each feature, each key/value pair
+        Returns:
+           dictionary : contains die and survive probabilities 
+        """
+        # clean the passenger data
+        heart_df = pd.DataFrame(heart, index=[0])
+        heart_df['gender'] = heart_df['gender'].apply(lambda x: 1 if x == 'Male' else 0)
+        #self.stroke_data['Residence_type'] = self.stroke_data['Residence_type'].apply(lambda x: 1 if x == 'Urban' else 0)
+        #self.stroke_data['smoking_status'] = self.stroke_data['smoking_status'].apply(lambda x: 1 if x == 'smoked' else 0)
+        #individual_df['alone'] = individual_df['alone'].apply(lambda x: 1 if x == True else 0)
+        #onehot = self.encoder.transform(passenger_df[['embarked']]).toarray()
+        #cols = ['embarked_' + str(val) for val in self.encoder.categories_[0]]
+        #onehot_df = pd.DataFrame(onehot, columns=cols)
+        #passenger_df = pd.concat([passenger_df, onehot_df], axis=1)
+        #passenger_df.drop(['embarked'], axis=1, inplace=True)
         
-if __name__ == "__main__":
-    print(" Begin:", testHeart.__doc__)
-    testHeart()
+        # predict the survival probability and extract the probabilities from numpy array
+        heart = np.squeeze(self.model.predict_proba(heart_df))
+        # return the survival probabilities as a dictionary
+        return {'heart percentage': heart}
     
-    probability = HeartModel_instance.predict(individual)
-    print('Heart probability:', probability.get('heart'))
+    def feature_weights(self):
+        """Get the feature weights
+        The weights represent the relative importance of each feature in the prediction model.
 
-    importances = HeartModel_instance.feature_weights()
-    for feature, importance in importances.items():
-        print(feature, 'importance:', importance)
-
-if __name__ == "__main__":
-    url = 'https://drive.google.com/file/d/1kJcitXtlysIg1pCPQxV-lMSVTFsLWOkv'
-    initHeart()
-    testHeart()
+        Returns:
+            dictionary: contains each feature as a key and its weight of importance as a value
+        """
+        # extract the feature importances from the decision tree model
+        importances = self.dt.feature_importances_
+        # return the feature importances as a dictionary, using dictionary comprehension
+        return {feature: importance for feature, importance in zip(self.features, importances)} 
     
+api = Api(heart_api)
+
+class HeartAPI:
+    class _Predict(Resource):
+        def options(self):
+            """Handle preflight requests."""
+            resp = make_response()
+            resp.headers.add("Access-Control-Allow-Origin", "*")
+            resp.headers.add("Access-Control-Allow-Methods", "POST")
+            resp.headers.add("Access-Control-Allow-Headers", "Content-Type, Authorization")
+            return resp
+
+api = Api(heart_api)
+class HeartAPI:
+    class _Predict(Resource):
+        
+        def post(self):
+            """ Semantics: In HTTP, POST requests are used to send data to the server for processing.
+            Sending passenger data to the server to get a prediction fits the semantics of a POST request.
+            
+            POST requests send data in the body of the request...
+            1. which can handle much larger amounts of data and data types, than URL parameters
+            2. using an HTTPS request, the data is encrypted, making it more secure
+            3. a JSON formated body is easy to read and write between JavaScript and Python, great for Postman testing
+            """     
+            # Get the passenger data from the request
+            heart = request.get_json()
+
+            # Get the singleton instance of the TitanicModel
+            HeartModel = HeartModel.get_instance()
+            # Predict the survival probability of the passenger
+            response = HeartModel.predict(heart)
+
+            # Return the response as JSON
+            return jsonify(response)
+
+    api.add_resource(_Predict, '/predict')
