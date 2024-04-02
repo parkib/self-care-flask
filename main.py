@@ -12,13 +12,17 @@ from __init__ import app, db, cors  # Definitions initialization
 # setup APIs
 from api.user import user_api # Blueprint import api definition
 from api.titanic import titanic_api
+from api.depression import predict_api
 from api.stroke import stroke_api
 from api.heart import heart_api
+from api.therapy import therapy_api
 # database migrations
 from model.users import initUsers
 from model.titanic import initTitanic
 from model.heart import initHeart
 from model.strokes import initStroke
+from model.therapy import initTherapy
+from model.depression import initDepression
 
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
@@ -32,6 +36,8 @@ app.register_blueprint(user_api) # register api routes
 app.register_blueprint(titanic_api)
 app.register_blueprint(stroke_api)
 app.register_blueprint(heart_api)
+app.register_blueprint(predict_api)
+app.register_blueprint(therapy_api)
 app.register_blueprint(app_projects) # register app pages
 
 
@@ -65,6 +71,8 @@ def generate_data():
     initTitanic()
     initStroke()
     initHeart()
+    initDepression()
+    initTherapy()
 
 # Register the custom command group with the Flask application
 app.cli.add_command(custom_cli)
