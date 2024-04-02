@@ -187,10 +187,11 @@ class UserAPI:
             except Exception as e:
                 # Handle the exception (e.g., log the error or return an error response)
                 return {'message': f'Error updating name: {str(e)}'}, 500
-
+    
             
     # building RESTapi endpoint
     api.add_resource(_CRUD, '/')
     api.add_resource(_Create, '/create')
     api.add_resource(_Security, '/authenticate')
+    api.add_resource(_Diary, '/diary')
     api.add_resource(_UD, '/<int:user_id>')

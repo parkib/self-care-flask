@@ -28,11 +28,12 @@ class User(db.Model):
     _exercise = db.Column(db.JSON, nullable=True)
     _sleep = db.Column(db.JSON, nullable=True)
     _coins = db.Column(db.String, nullable=True)
+    _diary = db.Column(db.String(255))
     _role = db.Column(db.String(20), default="User", nullable=False)
 
 
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, name, uid, dob, exercise, sleep, coins, password="123qwerty", role="User"): #change place of dob
+    def __init__(self, name, uid, dob, exercise, sleep, coins, password="123qwerty", diary='', role="User"): #change place of dob
         self._name = name    # variables with self prefix become part of the object, 
         self._uid = uid
         self.set_password(password)
@@ -41,6 +42,7 @@ class User(db.Model):
         self._exercise = exercise
         self._sleep = sleep
         self._coins = coins
+        self._diary = diary
 
     # a name getter method, extracts name from object
     @property
@@ -141,6 +143,15 @@ class User(db.Model):
     @coins.setter  
     def coins(self, coins):
         self._coins = coins
+
+    # a diary getter method
+    @property
+    def diary(self):
+        return self._diary
+
+    @diary.setter
+    def diary(self, diary):
+        self._diary = diary
        
 
     # CRUD create/add a new record to the table
@@ -166,13 +177,14 @@ class User(db.Model):
             "age": self.age, 
             "coins": self.coins,
             "sleep": self.sleep,
-            "exercise": self.exercise
+            "exercise": self.exercise,
+            "diary": self.diary
             # "posts": [post.read() for post in self.posts]
         }
 
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, name="", uid="", password="", coins="", sleep = "", exercise = ""):
+    def update(self, name="", uid="", password="", coins="", sleep = "", exercise = "", diary=""):
         """only updates values with length"""
         if len(name) > 0:
             self.name = name
@@ -186,6 +198,7 @@ class User(db.Model):
             self.sleep = sleep
         if len(exercise) > 0:
             self.exercise = exercise
+        self.diary = diary
         db.session.commit()
         return self
 
@@ -212,10 +225,10 @@ def initUsers():
         """Create database and tables"""
         db.create_all()
         """Tester data for table"""
-        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), role="Admin", sleep = "", exercise = "", coins = "0")
-        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), sleep = "", exercise = "", coins = "0")
-        u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1906, 12, 9), sleep = "", exercise = "", coins = "0" )
-        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), sleep = "", exercise = "", coins = "0")
+        u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), role="Admin", sleep = "", exercise = "", coins = "0", diary="")
+        u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), sleep = "", exercise = "", coins = "0", diary="")
+        u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1906, 12, 9), sleep = "", exercise = "", coins = "0", diary="")
+        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), sleep = "", exercise = "", coins = "0", diary="")
         users = [u1, u2, u3, u4]
 
         """Builds sample user/note(s) data"""
