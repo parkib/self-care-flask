@@ -187,7 +187,7 @@ class UserAPI:
             except Exception as e:
                 # Handle the exception (e.g., log the error or return an error response)
                 return {'message': f'Error updating name: {str(e)}'}, 500
-        class _Diary(Resource):
+    class _Diary(Resource):
         #retrieving data for all users in database
             def get(self):
                 token = request.cookies.get("jwt")
@@ -233,4 +233,4 @@ class UserAPI:
     api.add_resource(_Create, '/create')
     api.add_resource(_Security, '/authenticate')
     api.add_resource(_Diary, '/diary')
-    api.add_resource(_UD, '/<int:user_id>')
+    api.add_resource(_UD, '/<int:user_id>') 
