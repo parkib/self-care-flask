@@ -55,7 +55,7 @@ class UserAPI:
             # failure returns error
             return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400
 
-        @token_required()
+        #@token_required()
         def get(self, _): # Read Method, the _ indicates current_user is not used
             users = User.query.all()    # read/extract all users from database
             json_ready = [user.read() for user in users]  # prepare output in json
@@ -88,7 +88,7 @@ class UserAPI:
                 if uid is None:
                     return {'message': f'User ID is missing'}, 401
                 password = body.get('password')
-                
+
                 ''' Find user '''
                 user = User.query.filter_by(_uid=uid).first()
                 if user is None or not user.is_password(password):
@@ -100,7 +100,12 @@ class UserAPI:
                             current_app.config["SECRET_KEY"],
                             algorithm="HS256"
                         )
-                        resp = Response("Authentication for %s successful" % (user._uid))
+                        resp_data = {
+                        "message": "Authentication for %s successful" % (user._uid),
+                        "name": user.name,
+                        "id": user.id,
+                        }
+                        resp = jsonify(resp_data)
                         resp.set_cookie("jwt", token,
                                 max_age=3600,
                                 secure=True,
