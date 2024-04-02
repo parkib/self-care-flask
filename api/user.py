@@ -13,7 +13,7 @@ user_api = Blueprint('user_api', __name__,
 api = Api(user_api)
 
 class UserAPI:        
-    class _CRUD(Resource):  # User API operation for Create, Read.  THe Update, Delete methods need to be implemeented
+    class _CRUD(Resource):  # User API operation for Create, Read.  THe Update, Delete methods need to be implemented
         def post(self): # Create method
             ''' Read data for json body '''
             body = request.get_json()
@@ -30,28 +30,32 @@ class UserAPI:
             # look for password and dob
             password = body.get('password')
             dob = body.get('dob')
-
-            ''' #1: Key code block, setup USER OBJECT '''
-            uo = User(name=name, 
-                      uid=uid)
-            
+            coins = 0
+            uo = User(name=name, #user name
+                        uid=uid, sleep="", exercise="", dob=dob, coins=coins)
             ''' Additional garbage error checking '''
             # set password if provided
             if password is not None:
                 uo.set_password(password)
             # convert to date type
-            if dob is not None:
-                try:
-                    uo.dob = datetime.strptime(dob, '%Y-%m-%d').date()
-                except:
-                    return {'message': f'Date of birth format error {dob}, must be mm-dd-yyyy'}, 400
+            # if dob is not None:
+            #     try:
+            #         uo.dob = datetime.strptime(dob, '%Y-%m-%d').date()
+            #     except:
+            #         return {'message': f'Date of birth format error {dob}, must be mm-dd-yyyy'}, 400
+            # if tracking is not None:
+            #     uo.tracking = tracking
             
+            # if exercise is not None:
+            #     uo.exercise = exercise
+                
             ''' #2: Key Code block to add user to database '''
             # create user in database
             user = uo.create()
             # success returns json of user
             if user:
-                return jsonify(user.read())
+                #return jsonify(user.read())
+                return user.read()
             # failure returns error
             return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400
 
@@ -103,7 +107,7 @@ class UserAPI:
                         resp_data = {
                         "message": "Authentication for %s successful" % (user._uid),
                         "name": user.name,
-                        "id": user.id,
+                        "id": user.id
                         }
                         resp = jsonify(resp_data)
                         resp.set_cookie("jwt", token,
@@ -132,30 +136,23 @@ class UserAPI:
                         "data": None
                 }, 500
     class _Create(Resource):
-            def post(self):
-                body = request.get_json()
-                # Fetch data from the form
-                name = body.get('name')
-                uid = body.get('uid')
-                password = body.get('password')
-                dob = body.get('dob')
-                # exercise = body.get('exercise')
-                # tracking = body.get('tracking')
-                # coins = 0
-                # if exercise is not None:
-                #     new_user = User(name=name, uid=uid, password=password, dob=dob, exercise=exercise, tracking='', coins = coins)
-                # elif tracking is not None:
-                #     new_user = User(name=name, uid=uid, password=password, dob=dob, exercise = '', tracking=tracking, coins = coins)
-                # else: 
-                new_user = User(name=name, uid=uid, password=password, dob=dob)  
-                #exercise='', tracking='', coins = coins 
-                user = new_user.create()
-                # success returns json of user
-                if user:
+        def post(self):
+            body = request.get_json()
+            # Fetch data from the form
+            name = body.get('name')
+            uid = body.get('uid')
+            password = body.get('password')
+            dob = body.get('dob')
+            coins = 0
+            new_user = User(name=name, uid=uid, password=password, dob=dob, exercise='', sleep='', coins = coins )
+            user = new_user.create()
+            # success returns json of user
+            if user:
                     #return jsonify(user.read())
                     return user.read()
                 # failure returns error
-                return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400
+            return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400
+
 
             
     # building RESTapi endpoint
