@@ -189,43 +189,43 @@ class UserAPI:
                 return {'message': f'Error updating name: {str(e)}'}, 500
         class _Diary(Resource):
         #retrieving data for all users in database
-        def get(self):
-            token = request.cookies.get("jwt")
-            data = jwt.decode(token, 
-                            current_app.config["SECRET_KEY"], 
-                            algorithms=["HS256"])
-            users = User.query.all()
-            for user in users:
-                if user.uid == data["_uid"]:    
-                    jsonData = user.diary
-                    print(jsonData)
-            return jsonify(jsonData)
+            def get(self):
+                token = request.cookies.get("jwt")
+                data = jwt.decode(token, 
+                                current_app.config["SECRET_KEY"], 
+                                algorithms=["HS256"])
+                users = User.query.all()
+                for user in users:
+                    if user.uid == data["_uid"]:    
+                        jsonData = user.diary
+                        print(jsonData)
+                return jsonify(jsonData)
 
-        #Diary api code
-        def put(self):
-            body = request.get_json()
-            token = request.cookies.get("jwt")
-            data = jwt.decode(token, 
-                            current_app.config["SECRET_KEY"], 
-                            algorithms=["HS256"])
-            diary = body.get('diary')
-            users = User.query.all()
-            for user in users:
-                if user.uid == data["_uid"]:    
-                    print(data["_uid"])
-                    user.update("", "", "", user._diary + "///" + diary, "")
-                    print(user._diary)
+            #Diary api code
+            def put(self):
+                body = request.get_json()
+                token = request.cookies.get("jwt")
+                data = jwt.decode(token, 
+                                current_app.config["SECRET_KEY"], 
+                                algorithms=["HS256"])
+                diary = body.get('diary')
+                users = User.query.all()
+                for user in users:
+                    if user.uid == data["_uid"]:    
+                        print(data["_uid"])
+                        user.update("", "", "", user._diary + "///" + diary, "")
+                        print(user._diary)
 
-        #Posting diary data
-        def post(self):
-            token = request.cookies.get("jwt")
-            data = jwt.decode(token, 
-                            current_app.config["SECRET_KEY"], 
-                            algorithms=["HS256"])
-            users = User.query.all()
-            for user in users:
-                if user.uid == data["_uid"]:    
-                    return user.diary
+            #Posting diary data
+            def post(self):
+                token = request.cookies.get("jwt")
+                data = jwt.decode(token, 
+                                current_app.config["SECRET_KEY"], 
+                                algorithms=["HS256"])
+                users = User.query.all()
+                for user in users:
+                    if user.uid == data["_uid"]:    
+                        return user.diary
 
             
     # building RESTapi endpoint
