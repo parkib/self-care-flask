@@ -32,7 +32,7 @@ class UserAPI:
             dob = body.get('dob')
             coins = 0
             uo = User(name=name, #user name
-                        uid=uid, sleep="", exercise="", dob=dob, coins=coins)
+                        uid=uid, sleep="", exercise="", diary = "", dob=dob, coins=coins)
             ''' Additional garbage error checking '''
             # set password if provided
             if password is not None:
@@ -144,7 +144,7 @@ class UserAPI:
             password = body.get('password')
             dob = body.get('dob')
             coins = 0
-            new_user = User(name=name, uid=uid, password=password, dob=dob, exercise='', sleep='', coins = coins )
+            new_user = User(name=name, uid=uid, password=password, dob=dob, exercise='', sleep='', diary = '',  coins = coins )
             user = new_user.create()
             # success returns json of user
             if user:
