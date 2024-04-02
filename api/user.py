@@ -1,6 +1,6 @@
 import json, jwt
 from flask import Blueprint, request, jsonify, current_app, Response
-from flask_restful import Api, Resource # used for REST API building
+from flask_restful import Api, Resource, reqparse # used for REST API building
 from datetime import datetime
 from auth_middleware import token_required
 
@@ -153,10 +153,44 @@ class UserAPI:
                 # failure returns error
             return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400
 
+    class _UD(Resource):        
+        def put(self, user_id):
+            body = request.get_json()
+            user_id = body.get('id')
+            if user_id is None:
+                return {'message': 'Id not found.'}, 400
+            user = User.query.filter_by(id=user_id).first()  # Use filter_by to query by UID
+            if user:
+                if 'exercise' and 'sleep' in body:
+                     user.exercise = body['exercise']
+                     user.update()
+                     user.tracking = body['sleep']
+                     user.update() 
+                     return user.read()
+                return {'message': 'You may only update sleep or exercise'}, 400
+            return {'message': 'User not found.'}, 404    
+        def get(self, user_id):
+            user = User.query.filter_by(id=user_id).first()
+            if user:
+                return user.read()  # Assuming you have a 'read' method in your User model
+            return {'message': 'User not found.'}, 404
+        def patch(self, user_id):    
+            user = User.query.get(user_id)
+            if not user:
+                return {'message': 'User not found'}, 404
+            parser = reqparse.RequestParser()
+            parser.add_argument('name', type=str, required=True, help='New name is required')
+            args = parser.parse_args()
+            try:
+                user.updatename(new_name=args['name'])
+                return user.read(), 200
+            except Exception as e:
+                # Handle the exception (e.g., log the error or return an error response)
+                return {'message': f'Error updating name: {str(e)}'}, 500
 
             
     # building RESTapi endpoint
     api.add_resource(_CRUD, '/')
     api.add_resource(_Create, '/create')
     api.add_resource(_Security, '/authenticate')
-    
+    api.add_resource(_UD, '/<int:user_id>')

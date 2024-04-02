@@ -195,6 +195,12 @@ class User(db.Model):
         db.session.delete(self)
         db.session.commit()
         return None
+    
+    def updatename(self, new_name=None):
+        if new_name is not None:
+            self.name = new_name
+            db.session.commit()
+
 
 
 """Database Creation and Testing """
