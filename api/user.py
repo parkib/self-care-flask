@@ -160,7 +160,7 @@ class UserAPI:
                 if 'exercise' and 'sleep'   in body:
                      user.exercise = body['exercise']
                      user.update()
-                     user.tracking = body['sleep']
+                     user.sleep = body['sleep']
                      user.update() 
                      user.update() 
                      return user.read()
