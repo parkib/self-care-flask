@@ -30,9 +30,8 @@ class UserAPI:
             # look for password and dob
             password = body.get('password')
             dob = body.get('dob')
-            coins = 0
             uo = User(name=name, #user name
-                        uid=uid, sleep="", exercise="", diary = "", dob=dob, coins=coins)
+                        uid=uid, sleep="", exercise="", diary = "", dob=dob)
             ''' Additional garbage error checking '''
             # set password if provided
             if password is not None:
@@ -141,8 +140,7 @@ class UserAPI:
             uid = body.get('uid')
             password = body.get('password')
             dob = body.get('dob')
-            coins = "0"
-            new_user = User(name=name, uid=uid, password=password, dob=dob, exercise='', sleep='', diary = '',  coins = coins )
+            new_user = User(name=name, uid=uid, password=password, dob=dob, exercise='', sleep='', diary = '')
             user = new_user.create()
             # success returns json of user
             if user:
@@ -159,14 +157,11 @@ class UserAPI:
                 return {'message': 'Id not found.'}, 400
             user = User.query.filter_by(id=user_id).first()  # Use filter_by to query by UID
             if user:
-                if 'exercise' and 'sleep' and 'diary' and 'coins' in body:
+                if 'exercise' and 'sleep'   in body:
                      user.exercise = body['exercise']
                      user.update()
                      user.tracking = body['sleep']
                      user.update() 
-                     user.diary = body['diary']
-                     user.update() 
-                     user.coins = body['coins']
                      user.update() 
                      return user.read()
                 return {'message': 'You may only update sleep or exercise'}, 400
@@ -207,17 +202,15 @@ class UserAPI:
             def put(self):
                 body = request.get_json()
                 token = request.cookies.get("jwt")
-                data = jwt.decode(token, 
-                                current_app.config["SECRET_KEY"], 
-                                algorithms=["HS256"])
+                data = jwt.decode(token, current_app.config["SECRET_KEY"], algorithms=["HS256"])
                 diary = body.get('diary')
                 users = User.query.all()
                 for user in users:
                     if user.uid == data["_uid"]:    
-                        print(data["_uid"])
-                        user.update("", "", "", user._diary + "///" + diary, "")
-                        print(user._diary)
-
+                        user.diary = diary  # Update the diary data
+                        user.update()       # Commit the changes to the database
+                        return user.read()  # Return the updated user data
+                return {'message': 'User not found.'}, 404
             #Posting diary data
             def post(self):
                 token = request.cookies.get("jwt")
