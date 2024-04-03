@@ -28,12 +28,12 @@ class User(db.Model):
     _exercise = db.Column(db.JSON, nullable=True)
     _sleep = db.Column(db.JSON, nullable=True)
     _coins = db.Column(db.String, nullable=True)
-    _diary = db.Column(db.String(255))
+    _diary = db.Column(db.String(255),nullable=True)
     _role = db.Column(db.String(20), default="User", nullable=False)
 
 
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, name, uid, dob, exercise, sleep, coins, password="123qwerty", diary='', role="User"): #change place of dob
+    def __init__(self, name, uid, dob, exercise, sleep, coins, diary, password="123qwerty",  role="User"): #change place of dob
         self._name = name    # variables with self prefix become part of the object, 
         self._uid = uid
         self.set_password(password)
@@ -198,7 +198,9 @@ class User(db.Model):
             self.sleep = sleep
         if len(exercise) > 0:
             self.exercise = exercise
-        self.diary = diary
+        if len(diary) > 0:
+            self.diary = diary
+       
         db.session.commit()
         return self
 
@@ -228,7 +230,7 @@ def initUsers():
         u1 = User(name='Thomas Edison', uid='toby', password='123toby', dob=date(1847, 2, 11), role="Admin", sleep = "", exercise = "", coins = "0", diary="")
         u2 = User(name='Nicholas Tesla', uid='niko', password='123niko', dob=date(1856, 7, 10), sleep = "", exercise = "", coins = "0", diary="")
         u3 = User(name='Alexander Graham Bell', uid='lex', dob=date(1906, 12, 9), sleep = "", exercise = "", coins = "0", diary="")
-        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), sleep = "", exercise = "", coins = "0", diary="")
+        u4 = User(name='Grace Hopper', uid='hop', password='123hop', dob=date(1906, 12, 9), sleep = "", exercise = "", coins = "0", diary="1")
         users = [u1, u2, u3, u4]
 
         """Builds sample user/note(s) data"""

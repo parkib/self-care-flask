@@ -141,7 +141,7 @@ class UserAPI:
             uid = body.get('uid')
             password = body.get('password')
             dob = body.get('dob')
-            coins = 0
+            coins = "0"
             new_user = User(name=name, uid=uid, password=password, dob=dob, exercise='', sleep='', diary = '',  coins = coins )
             user = new_user.create()
             # success returns json of user
@@ -159,10 +159,14 @@ class UserAPI:
                 return {'message': 'Id not found.'}, 400
             user = User.query.filter_by(id=user_id).first()  # Use filter_by to query by UID
             if user:
-                if 'exercise' and 'sleep' in body:
+                if 'exercise' and 'sleep' and 'diary' and 'coins' in body:
                      user.exercise = body['exercise']
                      user.update()
                      user.tracking = body['sleep']
+                     user.update() 
+                     user.diary = body['diary']
+                     user.update() 
+                     user.coins = body['coins']
                      user.update() 
                      return user.read()
                 return {'message': 'You may only update sleep or exercise'}, 400
