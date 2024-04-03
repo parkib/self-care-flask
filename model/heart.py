@@ -1,22 +1,42 @@
-import pandas as pd
-import numpy as np
-from sklearn.model_selection import train_test_split
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score
-from sklearn.naive_bayes import GaussianNB
+import pandas as pd  # Pandas is a data manipulation and analysis library in Python
+import numpy as np  # NumPy is a library for numerical computing in Python
+from sklearn.model_selection import train_test_split  # This function splits arrays or matrices into random train and test subsets
+from sklearn.tree import DecisionTreeClassifier  # DecisionTreeClassifier is a class capable of performing multi-class classification on a dataset
+from sklearn.linear_model import LogisticRegression  # LogisticRegression is a linear model for binary classification
+from sklearn.metrics import accuracy_score  # Accuracy_score is a function to measure the accuracy of classification models
+from sklearn.naive_bayes import GaussianNB  # GaussianNB is a class for Gaussian Naive Bayes classification
 
 class HeartModel:
+    """
+    A class representing the Heart Disease Prediction Model.
+    
+    Attributes:
+        _instance (HeartModel): A singleton instance of the HeartModel class.
+        model (LogisticRegression): The logistic regression model for heart disease prediction.
+        dt (DecisionTreeClassifier): The decision tree classifier for feature importance analysis.
+        gnb (GaussianNB): The Gaussian Naive Bayes classifier for heart disease prediction.
+        features (list): A list of feature names used in the model.
+        target (str): The target variable name.
+        heart_data (DataFrame): The dataset containing heart disease data.
+    """
+    
     _instance = None
     
     def __init__(self):
+        """Constructor method for HeartModel."""
         self.model = None
         self.dt = None
-        self.features = ['age', 'sex', 'cp', 'trtpbs', 'chol', 'exng']
-        self.target = 'heart'
+        self.gnb = None
+        self.features = ['sex', 'age', 'cp', 'trtbps', 'chol', 'exng']
+        self.target = 'output'
         self.heart_data = None
 
     def _clean(self, url):
+        """Clean the dataset and prepare it for training.
+        
+        Args:
+            url (str): The URL to the heart disease dataset.
+        """
         # Load the dataset
         self.heart_data = pd.read_csv(url)
         
@@ -31,6 +51,7 @@ class HeartModel:
         self.heart_data.dropna(inplace=True)
 
     def _train(self):
+        """Train the logistic regression, decision tree, and Gaussian Naive Bayes models."""
         # Split the data into features and target
         X = self.heart_data[self.features]
         y = self.heart_data[self.target]
@@ -52,6 +73,14 @@ class HeartModel:
         
     @classmethod
     def get_instance(cls, url):
+        """Get the singleton instance of the HeartModel.
+        
+        Args:
+            url (str): The URL to the heart disease dataset.
+        
+        Returns:
+            HeartModel: The singleton instance of the HeartModel.
+        """
         if cls._instance is None:
             cls._instance = cls()
             cls._instance._clean(url)
@@ -59,55 +88,53 @@ class HeartModel:
         return cls._instance
 
     def predict(self, individual):
+        """Predict the probability of heart disease for an individual.
+        
+        Args:
+            individual (dict): A dictionary representing the individual's features.
+        
+        Returns:
+            dict: A dictionary containing the probability of heart disease.
+        """
         individual_df = pd.DataFrame(individual, index=[0])
         individual_df['sex'] = individual_df['sex'].apply(lambda x: 1 if x == 'Male' else 0)
         individual_df['exng'] = individual_df['exng'].apply(lambda x: 1 if x == 'Yes' else 0)
-        heart = np.squeeze(self.model.predict_proba(individual_df))
-        return {'heart': heart}
+        heart_attack = np.squeeze(self.model.predict_proba(individual_df))
+        return {'heart': heart_attack}
 
     def feature_weights(self):
+        """Get the feature importance weights from the decision tree model.
+        
+        Returns:
+            dict: A dictionary containing feature names and their importance weights.
+        """
         importances = self.dt.feature_importances_
         return {feature: importance for feature, importance in zip(self.features, importances)}
 
 def initHeart():
+    """Initialize the HeartModel instance."""
     url = 'https://drive.google.com/file/d/1kJcitXtlysIg1pCPQxV-lMSVTFsLWOkv'
     HeartModel.get_instance(url)
     
 def testHeart():
+    """Test the HeartModel by predicting heart disease probability and feature importance."""
     HeartModel_instance = HeartModel.get_instance(url)
     
     individual = {
-        'age': 14,
-        'sex': 'Male',
+        'sex': 14,
+        'age': 'Male',
         'cp': 2,
-        'trtpbs': 130,
+        'trtbps': 130,
         'chol': 204,
         'exng': 0,
     }
     
-
-    HeartModel = HeartModel.get_instance()
-    print(" Step 2:", HeartModel.get_instance.__doc__)
-   
-    # print the survival probability
-    print(" Step 3:", HeartModel.predict.__doc__)
-    probability = HeartModel.predict(individual)
-    print('\t Heart probability: {:.2%}',(probability.get('heart')))  
+    # Predict the heart disease probability for the individual
+    probability = HeartModel_instance.predict(individual)
+    print('Heart probability:', probability.get('heart_attack'))
     print()
     
-    # print the feature weights in the prediction model
-    print(" Step 4:", HeartModel.feature_weights.__doc__)
-    importances = HeartModel.feature_weights()
-    for feature, importance in importances.items():
-        print("\t\t", feature, f"{importance:.2%}") # importance of each feature, each key/value pair
-        
-if __name__ == "__main__":
-    print(" Begin:", testHeart.__doc__)
-    testHeart()
-    
-    probability = HeartModel_instance.predict(individual)
-    print('Heart probability:', probability.get('heart'))
-
+    # Get the feature importance weights
     importances = HeartModel_instance.feature_weights()
     for feature, importance in importances.items():
         print(feature, 'importance:', importance)
@@ -116,4 +143,3 @@ if __name__ == "__main__":
     url = 'https://drive.google.com/file/d/1kJcitXtlysIg1pCPQxV-lMSVTFsLWOkv'
     initHeart()
     testHeart()
-    
