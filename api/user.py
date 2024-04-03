@@ -114,10 +114,8 @@ class UserAPI:
                                 max_age=3600,
                                 secure=True,
                                 httponly=True,
-                                path='/',
-                                samesite='None',
-                                domain="jplip.github.io"
-                                )
+                                path='/'
+                        )
                         return resp
                     except Exception as e:
                         return {
