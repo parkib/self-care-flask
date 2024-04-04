@@ -186,41 +186,44 @@ class UserAPI:
                 return {'message': f'Error updating name: {str(e)}'}, 500
     class _Diary(Resource):
         #retrieving data for all users in database
-            def get(self):
-                token = request.cookies.get("jwt")
-                data = jwt.decode(token, 
-                                current_app.config["SECRET_KEY"], 
-                                algorithms=["HS256"])
-                users = User.query.all()
-                for user in users:
-                    if user.uid == data["_uid"]:    
-                        jsonData = user.diary
-                        print(jsonData)
-                return jsonify(jsonData)
+        def get(self):
+            token = request.cookies.get("jwt")
+            data = jwt.decode(token, 
+                            current_app.config["SECRET_KEY"], 
+                            algorithms=["HS256"])
+            users = User.query.all()
+            for user in users:
+                if user.uid == data["_uid"]:    
+                    jsonData = user.diary
+                    print(jsonData)
+                    return user.diary
+            return jsonify(jsonData)
+                
+        #Itinerary api code
+        def put(self):
+            body = request.get_json()
+            token = request.cookies.get("jwt")
+            data = jwt.decode(token, 
+                            current_app.config["SECRET_KEY"], 
+                            algorithms=["HS256"])
+            diary = body.get('diary')
+            users = User.query.all()
+            for user in users:
+                if user.uid == data["_uid"]:    
+                    print(data["_uid"])
+                    user.update("", "", "", user._diary + "///" + diary, "", "")
+                    return user.read()
 
-            #Diary api code
-            def put(self):
-                body = request.get_json()
-                token = request.cookies.get("jwt")
-                data = jwt.decode(token, current_app.config["SECRET_KEY"], algorithms=["HS256"])
-                diary = body.get('diary')
-                users = User.query.all()
-                for user in users:
-                    if user.uid == data["_uid"]:    
-                        user.diary = diary  # Update the diary data
-                        user.update()       # Commit the changes to the database
-                        return user.read()  # Return the updated user data
-                return {'message': 'User not found.'}, 404
-            #Posting diary data
-            def post(self):
-                token = request.cookies.get("jwt")
-                data = jwt.decode(token, 
-                                current_app.config["SECRET_KEY"], 
-                                algorithms=["HS256"])
-                users = User.query.all()
-                for user in users:
-                    if user.uid == data["_uid"]:    
-                        return user.diary
+        #Posting itinerary data
+        def post(self):
+            token = request.cookies.get("jwt")
+            data = jwt.decode(token, 
+                            current_app.config["SECRET_KEY"], 
+                            algorithms=["HS256"])
+            users = User.query.all()
+            for user in users:
+                if user.uid == data["_uid"]:    
+                    return user.diary
 
             
     # building RESTapi endpoint
