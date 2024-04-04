@@ -67,7 +67,7 @@ class Player(db.Model):
         result = check_password_hash(self._password, password)
         return result
     
-    # dob property is returned as string, to avoid unfriendly outcomes
+    # property is returned as string, to avoid unfriendly outcomes
     @property
     def tokens(self):
         return self._tokens

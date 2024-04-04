@@ -27,11 +27,10 @@ class UserAPI:
             uid = body.get('uid')
             if uid is None or len(uid) < 2:
                 return {'message': f'User ID is missing, or is less than 2 characters'}, 400
-            # look for password and dob
+            # look for password
             password = body.get('password')
-            dob = body.get('dob')
             uo = User(name=name, #user name
-                        uid=uid, sleep="", exercise="", diary = "", dob=dob)
+                        uid=uid, diary = "", sleep="", exercise="")
             ''' Additional garbage error checking '''
             # set password if provided
             if password is not None:
@@ -139,8 +138,7 @@ class UserAPI:
             name = body.get('name')
             uid = body.get('uid')
             password = body.get('password')
-            dob = body.get('dob')
-            new_user = User(name=name, uid=uid, password=password, dob=dob, exercise='', sleep='', diary = '')
+            new_user = User(name=name, uid=uid, password=password, diary = '', exercise='', sleep='')
             user = new_user.create()
             # success returns json of user
             if user:

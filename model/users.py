@@ -90,7 +90,7 @@ class User(db.Model):
         """Check against hashed password."""
         result = check_password_hash(self._password, password)
         return result
-    # dob property is returned as string, to avoid unfriendly outcomes
+    #property is returned as string, to avoid unfriendly outcomes
     # output content using str(object) in human readable form, uses getter
     # output content using json dumps, this is ready for API response
     def __str__(self):
