@@ -197,7 +197,7 @@ class UserAPI:
                     return user.diary
             return jsonify(jsonData)
                 
-        #Itinerary api code
+        #Diary api code
         def put(self):
             body = request.get_json()
             token = request.cookies.get("jwt")
@@ -212,7 +212,7 @@ class UserAPI:
                     user.update("", "", "", user._diary + "///" + diary, "", "")
                     return user.read()
 
-        #Posting itinerary data
+        #Posting diary data
         def post(self):
             token = request.cookies.get("jwt")
             data = jwt.decode(token, 
