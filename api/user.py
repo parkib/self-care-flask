@@ -1,5 +1,5 @@
 import json, jwt
-from flask import Blueprint, request, jsonify, current_app, Response
+from flask import Blueprint, make_response, request, jsonify, current_app, Response
 from flask_restful import Api, Resource, reqparse # used for REST API building
 from datetime import datetime
 from auth_middleware import token_required
@@ -57,14 +57,12 @@ class UserAPI:
             # failure returns error
             return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400
 
-        @token_required()
-        def get(self, _): # Read Method, the _ indicates current_user is not used
+        def get(self): # Read Method, the _ indicates current_user is not used
             users = User.query.all()    # read/extract all users from database
             json_ready = [user.read() for user in users]  # prepare output in json
             return jsonify(json_ready)  # jsonify creates Flask response object, more specific to APIs than json.dumps
    
-        @token_required("Admin")
-        def delete(self, _): # Delete Method
+        def delete(self): # Delete Method
             body = request.get_json()
             uid = body.get('uid')
             user = User.query.filter_by(_uid=uid).first()
@@ -145,8 +143,13 @@ class UserAPI:
                     #return jsonify(user.read())
                     return user.read()
                 # failure returns error
-            return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400
-
+            return {'message': f'Processed {name}, either a format error or User ID {uid} is duplicate'}, 400   
+    class _Logout(Resource):
+        def post(self):
+            # Create a response to remove the JWT cookie
+            resp = make_response(jsonify({"message": "Logout successful"}))
+            resp.set_cookie("jwt", "", expires=0)  # Clear the JWT cookie
+            return resp
     class _UD(Resource):        
         def put(self, user_id):
             body = request.get_json()
@@ -230,3 +233,4 @@ class UserAPI:
     api.add_resource(_Security, '/authenticate')
     api.add_resource(_Diary, '/diary')
     api.add_resource(_UD, '/<int:user_id>') 
+    api.add_resource(_Logout, '/logout') 
