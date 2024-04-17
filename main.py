@@ -15,12 +15,14 @@ from api.titanic import titanic_api
 from api.depression import predict_api
 from api.stroke import stroke_api
 from api.heart import heart_api
+from api.activity import activity_api
 # database migrations
 from model.users import initUsers
 from model.titanic import initTitanic
 from model.heart import initHeart
 from model.strokes import initStroke
 from model.depression import initDepression
+from model.activities import initActivities
 
 # setup App pages
 from projects.projects import app_projects # Blueprint directory import projects definition
@@ -35,8 +37,8 @@ app.register_blueprint(titanic_api)
 app.register_blueprint(stroke_api)
 app.register_blueprint(heart_api)
 app.register_blueprint(predict_api)
+app.register_blueprint(activity_api)
 app.register_blueprint(app_projects) # register app pages
-
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
@@ -65,6 +67,7 @@ custom_cli = AppGroup('custom', help='Custom commands')
 @custom_cli.command('generate_data')
 def generate_data():
     initUsers()
+    initActivities()
     initTitanic()
     initStroke()
     initHeart()
