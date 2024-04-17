@@ -3,6 +3,7 @@ import jwt
 from flask import request, abort
 from flask import current_app
 from model.users import User
+from flask import g  # Import the g object from Flask
 
 def token_required(roles=None):
     def decorator(f):
@@ -33,6 +34,9 @@ def token_required(roles=None):
                         "error": "Forbidden"
                     }, 403
 
+                # Store the current_user in the g object
+                g.current_user = current_user
+
             except Exception as e:
                 return {
                     "message": "Something went wrong",
@@ -40,8 +44,9 @@ def token_required(roles=None):
                     "error": str(e)
                 }, 500
 
-            return f(current_user, *args, **kwargs)
+            return f(*args, **kwargs)
 
         return decorated
 
     return decorator
+
