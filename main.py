@@ -1,9 +1,12 @@
 import threading
 
-# Import necessary packages from flask
-from flask import render_template, request, jsonify
+# import "packages" from flask
+from flask import render_template,request, jsonify  # import render_template from "public" flask libraries
 from flask.cli import AppGroup
-from flask_cors import CORS
+
+
+# import "packages" from "this" project
+from __init__ import app, db, cors  # Definitions initialization
 
 # Import necessary modules from the project
 from __init__ import app, db
@@ -39,51 +42,39 @@ app.register_blueprint(predict_api)
 app.register_blueprint(activity_api)
 app.register_blueprint(app_projects)
 
-# Initialize CORS
-CORS(app)
-
-@app.errorhandler(404)
+@app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
+    # note that we set the 404 status explicitly
     return render_template('404.html'), 404
 
-@app.route('/')
+@app.route('/')  # connects default URL to index() function
 def index():
     return render_template("index.html")
 
-@app.route('/table/')
+@app.route('/table/')  # connects /stub/ URL to stub() function
 def table():
     return render_template("table.html")
 
-# Manually handle CORS headers for the quote-repository route
-@app.route('/quote-repository', methods=['GET', 'POST', 'OPTIONS'])
-def quote_repository():
-    if request.method == 'OPTIONS':
-        # Handle preflight request
-        response = app.make_default_options_response()
-    elif request.method == 'GET':
-        # Handle GET request
-        quotes = Quote.query.all()
-        quotes_list = [{'quote_text': quote.quote_text, 'quote_author': quote.quote_author, 'user_opinion': quote.user_opinion} for quote in quotes]
-        response = jsonify({'quotes': quotes_list})
-    else:
-        # Handle POST request
-        data = request.get_json()
-        new_quote = Quote(
-            quote_text=data.get('quote'),
-            quote_author=data.get('quote_author'),
-            user_opinion=data.get('opinion')
-        )
-        db.session.add(new_quote)
-        db.session.commit()
-        response_data = {'message': 'Quote submitted successfully'}
-        response = jsonify(response_data)
+@app.route('/api/users/save_settings', methods=['POST'])  # Define the route for saving settings
+def save_settings():
+    try:
+        # Extract settings data from the request
+        settings = request.json.get('settings')
 
-    # Set CORS headers
-    response.headers['Access-Control-Allow-Origin'] = '*'
-    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
-    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+        # Update the user's settings in the database (replace 'current_user' with your actual user object)
+        # Example: current_user.update_settings(settings)
+        # Make sure to implement this method in your User model
 
-    return response
+        return jsonify({'message': 'Settings saved successfully'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.before_request
+def before_request():
+    # Check if the request came from a specific origin
+    allowed_origin = request.headers.get('Origin')
+    if allowed_origin in ['http://localhost:4100', 'http://127.0.0.1:4100', 'https://davidl0914.github.io']:
+        cors._origins = allowed_origin
 
 # Create an AppGroup for custom commands
 custom_cli = AppGroup('custom', help='Custom commands')
