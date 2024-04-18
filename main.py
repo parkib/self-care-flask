@@ -1,64 +1,89 @@
 import threading
 
-# import "packages" from flask
-from flask import render_template,request  # import render_template from "public" flask libraries
+# Import necessary packages from flask
+from flask import render_template, request, jsonify
 from flask.cli import AppGroup
+from flask_cors import CORS
 
-
-# import "packages" from "this" project
-from __init__ import app, db, cors  # Definitions initialization
-
-
-# setup APIs
-from api.user import user_api # Blueprint import api definition
+# Import necessary modules from the project
+from __init__ import app, db
+from api.user import user_api
 from api.titanic import titanic_api
 from api.depression import predict_api
 from api.stroke import stroke_api
 from api.heart import heart_api
 from api.activity import activity_api
-# database migrations
 from model.users import initUsers
 from model.titanic import initTitanic
 from model.heart import initHeart
 from model.strokes import initStroke
 from model.depression import initDepression
 from model.activities import initActivities
-
-# setup App pages
-from projects.projects import app_projects # Blueprint directory import projects definition
-
+from projects.projects import app_projects
 
 # Initialize the SQLAlchemy object to work with the Flask app instance
 db.init_app(app)
 
-# register URIs
-app.register_blueprint(user_api) # register api routes
+class Quote(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    quote_text = db.Column(db.String(255), nullable=False)
+    quote_author = db.Column(db.String(100), nullable=False)
+    user_opinion = db.Column(db.Text, nullable=False)
+
+# Register URIs
+app.register_blueprint(user_api)
 app.register_blueprint(titanic_api)
 app.register_blueprint(stroke_api)
 app.register_blueprint(heart_api)
 app.register_blueprint(predict_api)
 app.register_blueprint(activity_api)
-app.register_blueprint(app_projects) # register app pages
+app.register_blueprint(app_projects)
 
-@app.errorhandler(404)  # catch for URL not found
+# Initialize CORS
+CORS(app, resources={r"/quote-repository": {"origins": "http://127.0.0.1:4100"}})
+
+@app.errorhandler(404)
 def page_not_found(e):
-    # note that we set the 404 status explicitly
     return render_template('404.html'), 404
 
-@app.route('/')  # connects default URL to index() function
+@app.route('/')
 def index():
     return render_template("index.html")
 
-@app.route('/table/')  # connects /stub/ URL to stub() function
+@app.route('/table/')
 def table():
     return render_template("table.html")
 
-@app.before_request
-def before_request():
-    # Check if the request came from a specific origin
-    allowed_origin = request.headers.get('Origin')
-    if allowed_origin in ['http://localhost:4100', 'http://127.0.0.1:4100', 'https://jplip.github.io']:
-        cors._origins = allowed_origin
+# Manually handle CORS headers for the quote-repository route
+@app.route('/quote-repository', methods=['GET', 'POST', 'OPTIONS'])
+def quote_repository():
+    if request.method == 'OPTIONS':
+        # Handle preflight request
+        response = app.make_default_options_response()
+    elif request.method == 'GET':
+        # Handle GET request
+        quotes = Quote.query.all()
+        quotes_list = [{'quote_text': quote.quote_text, 'quote_author': quote.quote_author, 'user_opinion': quote.user_opinion} for quote in quotes]
+        response = jsonify({'quotes': quotes_list})
+    else:
+        # Handle POST request
+        data = request.get_json()
+        new_quote = Quote(
+            quote_text=data.get('quote'),
+            quote_author=data.get('quote_author'),
+            user_opinion=data.get('opinion')
+        )
+        db.session.add(new_quote)
+        db.session.commit()
+        response_data = {'message': 'Quote submitted successfully'}
+        response = jsonify(response_data)
+
+    # Set CORS headers
+    response.headers['Access-Control-Allow-Origin'] = 'http://127.0.0.1:4100'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
+
+    return response
 
 # Create an AppGroup for custom commands
 custom_cli = AppGroup('custom', help='Custom commands')
@@ -75,8 +100,9 @@ def generate_data():
 
 # Register the custom command group with the Flask application
 app.cli.add_command(custom_cli)
-        
-# this runs the application on the development server
+
+# Run the application on the development server
 if __name__ == "__main__":
-    # change name for testing
+    with app.app_context():
+        db.create_all()
     app.run(debug=True, host="0.0.0.0", port="8086")
