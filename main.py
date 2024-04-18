@@ -40,7 +40,7 @@ app.register_blueprint(activity_api)
 app.register_blueprint(app_projects)
 
 # Initialize CORS
-CORS(app, resources={r"/quote-repository": {"origins": "http://127.0.0.1:4100"}})
+CORS(app)
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -79,7 +79,7 @@ def quote_repository():
         response = jsonify(response_data)
 
     # Set CORS headers
-    response.headers['Access-Control-Allow-Origin'] = 'http://127.0.0.1:4100'
+    response.headers['Access-Control-Allow-Origin'] = '*'
     response.headers['Access-Control-Allow-Methods'] = 'GET, POST, OPTIONS'
     response.headers['Access-Control-Allow-Headers'] = 'Content-Type'
 
