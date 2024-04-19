@@ -16,12 +16,14 @@ from api.depression import predict_api
 from api.stroke import stroke_api
 from api.heart import heart_api
 from api.activity import activity_api
+from api.recipe import recipe_api
 from model.users import initUsers
 from model.titanic import initTitanic
 from model.heart import initHeart
 from model.strokes import initStroke
 from model.depression import initDepression
 from model.activities import initActivities
+from model.recipes import initRecipes
 from projects.projects import app_projects
 
 # Initialize the SQLAlchemy object to work with the Flask app instance
@@ -33,6 +35,7 @@ class Quote(db.Model):
     quote_author = db.Column(db.String(100), nullable=False)
     user_opinion = db.Column(db.Text, nullable=False)
 
+
 # Register URIs
 app.register_blueprint(user_api)
 app.register_blueprint(titanic_api)
@@ -40,6 +43,7 @@ app.register_blueprint(stroke_api)
 app.register_blueprint(heart_api)
 app.register_blueprint(predict_api)
 app.register_blueprint(activity_api)
+app.register_blueprint(recipe_api)
 app.register_blueprint(app_projects)
 
 @app.errorhandler(404)  # catch for URL not found
@@ -88,6 +92,7 @@ def generate_data():
     initStroke()
     initHeart()
     initDepression()
+    initRecipes()
 
 # Register the custom command group with the Flask application
 app.cli.add_command(custom_cli)
