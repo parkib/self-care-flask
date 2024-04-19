@@ -154,10 +154,34 @@ def initUsers():
         """Create database and tables"""
         db.create_all()
         """Tester data for table"""
-        u1 = User(name='Justin', uid='jst', password='123jst', role="admin")
-        u2 = User(name='Bella', uid='bell', password='123bell', role="admin")
-        u3 = User(name='Lindsay Tang', uid='lct', password='123lin', role="admin")
-        u4 = User(name='Tester', uid='test', password='123test')
+        u1 = User(name='Justin', uid='jst', password='123jst', role="admin", exercise={
+                "duration": "5",
+                "exerciseDate": "2024-04-05",
+                "exerciseType": "Biking"
+            }, sleep={
+                "quality": "good",
+                "sleepDate": "2024-04-08",
+                "sleepHours": "5"
+            }, diary=" I went to school today.")
+        u2 = User(name='Bella', uid='bell', password='123bell', role="admin", exercise={
+                "duration": "5",
+                "exerciseDate": "2024-04-05",
+                "exerciseType": "Biking"
+            }, sleep = {
+                "quality": "good",
+                "sleepDate": "2024-04-08",
+                "sleepHours": "5"
+            }, diary = "My favorite color is blue. ")
+        u3 = User(name='Lindsay' , uid='lct', password='123lin', role="admin", exercise= {                                                                               
+                "duration": "5",
+                "exerciseDate": "2024-04-05",
+                "exerciseType": "Biking" },
+                sleep = { "quality": "good",
+                "sleepDate": "2024-04-08",
+                "sleepHours": "5", }, diary="My favorite subject is math")           
+        u4 = User(name='Jake', uid='test', password='123test', exercise={ "duration": "5",
+                "exerciseDate": "2024-04-05",
+                "exerciseType": "Biking" })
         users = [u1, u2, u3, u4]
         """Builds sample user/note(s) data"""
         for user in users:
