@@ -3,11 +3,13 @@ from random import randrange
 from datetime import date
 import os, base64
 import json
+
 from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
-''' Tutorial: https://www.sqlalchemy.org/library.html#tutorials, try to get into Python shell and follow along '''
-# Define the Post class to manage actions in 'posts' table,  with a relationship to 'users' table
+
+
+
 class Recipe(db.Model):
     __tablename__ = 'recipes'  # table name is plural, class name is singular
     # Define the User schema with "vars" from object
@@ -53,15 +55,10 @@ class Recipe(db.Model):
         self._difficulty = difficulty
         
         
-
-  
-    #property is returned as string, to avoid unfriendly outcomes
-    # output content using str(object) in human readable form, uses getter
-    # output content using json dumps, this is ready for API response
     def __str__(self):
         return json.dumps(self.read())
-    # CRUD create/add a new record to the table
-    # returns self or None on error
+
+
     def create(self):
         try:
             # creates a person object from User(db.Model) class, passes initializers
@@ -71,8 +68,8 @@ class Recipe(db.Model):
         except IntegrityError:
             db.session.remove()
             return None
-    # CRUD read converts self to dictionary
-    # returns dictionary
+    
+
     def read(self):
         return {
             "id": self.id,
@@ -82,8 +79,8 @@ class Recipe(db.Model):
             "difficulty": self.difficulty,
             
         }
-    # CRUD update: updates user name, password, phone
-    # returns self
+    
+    _recipename
 
 """Database Creation and Testing """
 # Builds working data for testing
@@ -93,9 +90,9 @@ def initRecipes():
         db.create_all()
         """Tester data for table"""
         recipes = [
-            Recipe(recipename="mi", healthyingredients="none", recipesteps="hsfeat", difficulty="il"),
-            Recipe(recipename="hjbmi", healthyingredients="nonhke", recipesteps="hebhsfd,at", difficulty="ihl,l"),
-            Recipe(recipename="mhki", healthyingredients="nonehk", recipesteps="hehgjat", difficulty="ijkhl")
+            Recipe(recipename="Mango Smoothie", healthyingredients="mango, yogurt, honey", recipesteps="1. Peel and chop the mango. <br> 2. Blend the mango, yogurt, and honey until smooth.", difficulty="Easy"),
+            Recipe(recipename="Healthy Banana Muffins", healthyingredients="bananas, whole wheat flour, honey", recipesteps="1. Preheat oven to 350°F (175°C).  <br> 2. Mash bananas in a bowl.  <br> 3. Mix in whole wheat flour and honey until well combined.  <br> 4. Pour batter into muffin cups.  <br> 5. Bake for 20-25 minutes or until a toothpick inserted comes out clean.", difficulty="Intermediate"),
+            Recipe(recipename="Mushroom Kale Soup", healthyingredients="mushrooms, kale, vegetable broth", recipesteps="1. Slice mushrooms and chop kale.  <br> 2. In a large pot, sauté mushrooms until golden brown.  <br> 3. Add kale and vegetable broth to the pot.  <br> 4. Simmer for 20 minutes.  <br> 5. Season with salt and pepper to taste.", difficulty="Intermediate")
         ]
         """Builds sample user/note(s) data"""
         for recipe in recipes:
