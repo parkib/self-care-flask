@@ -150,6 +150,7 @@ class UserAPI:
             resp = make_response(jsonify({"message": "Logout successful"}))
             resp.set_cookie("jwt", "", expires=0)  # Clear the JWT cookie
             return resp
+    
     class _UD(Resource):        
         def put(self, user_id):
             body = request.get_json()
