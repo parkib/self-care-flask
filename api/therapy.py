@@ -1,20 +1,20 @@
 from flask import Blueprint, request, jsonify
 from flask_restful import Api, Resource # used for REST API building
 
-from model.activities import Activity
+from model.therapies import Therapy
 
 # Change variable name and API name and prefix
-activity_api = Blueprint('activity_api', __name__,
-                   url_prefix='/api/activity')
+therapy_api = Blueprint('therapy_api', __name__,
+                   url_prefix='/api/therapy')
 
 # API docs https://flask-restful.readthedocs.io/en/latest/api.html
-api = Api(activity_api)
+api = Api(therapy_api)
 
-class ActivityAPI:     
+class TherapyAPI:     
     class _Read(Resource):
         def get(self):
-            activities = Activity.query.all()
-            json_ready = [activity.read() for activity in activities]
+            therapies = Therapy.query.all()
+            json_ready = [therapy.read() for therapy in therapies]
             return jsonify(json_ready)
     class _Create(Resource):
         def post(self):
@@ -31,12 +31,12 @@ class ActivityAPI:
             special = body.get('special')
             if special is None or len(special) < 2:
                 return {'message': f'Specialty is missing, or is less than 2 characters'}, 400
-            new_activity = Activity(name=name, location=location, special=special)
-            activity = new_activity.create()
+            new_therapy = Therapy(name=name, location=location, special=special)
+            therapy = new_therapy.create()
             # success returns json of user
-            if activity:
+            if therapy:
                     #return jsonify(user.read())
-                    return activity.read()
+                    return therapy.read()
                 # failure returns error
             return {'message': f'Record already exists'}, 400   
 
