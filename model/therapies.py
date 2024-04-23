@@ -11,8 +11,8 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 ''' Tutorial: https://www.sqlalchemy.org/library.html#tutorials, try to get into Python shell and follow along '''
 
-class Activity(db.Model):
-    __tablename__ = 'activities'
+class Therapy(db.Model):
+    __tablename__ = 'therapies'
 
     id = db.Column(db.Integer, primary_key=True)
     _name = db.Column(db.String(255), unique=False, nullable=False)
@@ -68,29 +68,29 @@ class Activity(db.Model):
             "special": self.special,
         }
 
-def initActivities():
+def initTherapies():
     with app.app_context():
         db.create_all()
-        activities = [
-            Activity(name="Tranquil Haven Counseling Center", location="Suburban Retreat", special="General Counseling"),
-            Activity(name="Healing Waters Retreat", location="Riverside Sanctuary", special="Trauma Recovery"),
-            Activity(name="Family Harmony Center", location="Urban Oasis", special="Family Counseling"),
-            Activity(name="Sunrise Serenity Therapy Spa", location="Coastal Resort", special="Wellness Retreat"),
-            Activity(name="Inner Peace Sanctuary", location="Mountain Retreat", special="Mindfulness Therapy"),
-            Activity(name="Empowerment Pathways Center", location="Downtown Hub", special="Personal Growth Workshops"),
-            Activity(name="Whispering Winds Wellness Retreat", location="Countryside Haven", special="Stress Management"),
-            Activity(name="Safe Harbor Trauma Center", location="Seaside Refuge", special="PTSD Treatment"),
-            Activity(name="Hope Springs Counseling Oasis", location="Desert Sanctuary", special="Grief Counseling"),
-            Activity(name="Bright Horizons Counseling Collective", location="Community Center", special="Youth Counseling"),
-            Activity(name="Serenity Falls Therapy Retreat", location="Forest Hideaway", special="Addiction Recovery"),
-            Activity(name="Lighthouse Healing Institute", location="Lakeside Sanctuary", special="Depression Support"),
-            Activity(name="Tranquility Cove Wellness Center", location="Island Escape", special="Anxiety Relief"),
-            Activity(name="Phoenix Rising Counseling Center", location="Metropolitan Haven", special="Life Coaching"),
-            Activity(name="Golden Pathways Therapy Haven", location="Retreat Center", special="Spiritual Counseling")
+        therapies = [
+            Therapy(name="Tranquil Haven Counseling Center", location="Suburban Retreat", special="General Counseling"),
+            Therapy(name="Healing Waters Retreat", location="Riverside Sanctuary", special="Trauma Recovery"),
+            Therapy(name="Family Harmony Center", location="Urban Oasis", special="Family Counseling"),
+            Therapy(name="Sunrise Serenity Therapy Spa", location="Coastal Resort", special="Wellness Retreat"),
+            Therapy(name="Inner Peace Sanctuary", location="Mountain Retreat", special="Mindfulness Therapy"),
+            Therapy(name="Empowerment Pathways Center", location="Downtown Hub", special="Personal Growth Workshops"),
+            Therapy(name="Whispering Winds Wellness Retreat", location="Countryside Haven", special="Stress Management"),
+            Therapy(name="Safe Harbor Trauma Center", location="Seaside Refuge", special="PTSD Treatment"),
+            Therapy(name="Hope Springs Counseling Oasis", location="Desert Sanctuary", special="Grief Counseling"),
+            Therapy(name="Bright Horizons Counseling Collective", location="Community Center", special="Youth Counseling"),
+            Therapy(name="Serenity Falls Therapy Retreat", location="Forest Hideaway", special="Addiction Recovery"),
+            Therapy(name="Lighthouse Healing Institute", location="Lakeside Sanctuary", special="Depression Support"),
+            Therapy(name="Tranquility Cove Wellness Center", location="Island Escape", special="Anxiety Relief"),
+            Therapy(name="Phoenix Rising Counseling Center", location="Metropolitan Haven", special="Life Coaching"),
+            Therapy(name="Golden Pathways Therapy Haven", location="Retreat Center", special="Spiritual Counseling")
         ]
-        for activity in activities:
+        for therapy in therapies:
             try:
-                activity.create()
+                therapy.create()
             except IntegrityError:
                 db.session.rollback()
                 print(f"Record exists")

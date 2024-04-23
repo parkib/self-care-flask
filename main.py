@@ -15,7 +15,8 @@ from api.titanic import titanic_api
 from api.depression import predict_api
 from api.stroke import stroke_api
 from api.heart import heart_api
-from api.activity import activity_api
+from api.therapy import therapy_api
+from api.hotline import hotline_api
 from api.recipe import recipe_api
 from api.hotline import hotline_api
 from model.users import initUsers
@@ -23,9 +24,9 @@ from model.titanic import initTitanic
 from model.heart import initHeart
 from model.strokes import initStroke
 from model.depression import initDepression
-from model.activities import initActivities
+from model.therapies import initTherapies
 from model.recipes import initRecipes
-from model.hotline import initHotlines
+from model.hotlines import initHotlines
 from projects.projects import app_projects
 
 # Initialize the SQLAlchemy object to work with the Flask app instance
@@ -44,7 +45,8 @@ app.register_blueprint(titanic_api)
 app.register_blueprint(stroke_api)
 app.register_blueprint(heart_api)
 app.register_blueprint(predict_api)
-app.register_blueprint(activity_api)
+app.register_blueprint(therapy_api)
+app.register_blueprint(hotline_api)
 app.register_blueprint(recipe_api)
 app.register_blueprint(hotline_api)
 app.register_blueprint(app_projects)
@@ -90,7 +92,7 @@ custom_cli = AppGroup('custom', help='Custom commands')
 @custom_cli.command('generate_data')
 def generate_data():
     initUsers()
-    initActivities()
+    initTherapies()
     initTitanic()
     initStroke()
     initHeart()
