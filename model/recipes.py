@@ -80,7 +80,6 @@ class Recipe(db.Model):
             
         }
     
-    _recipename
 
 """Database Creation and Testing """
 # Builds working data for testing

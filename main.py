@@ -18,6 +18,7 @@ from api.heart import heart_api
 from api.therapy import therapy_api
 from api.hotline import hotline_api
 from api.recipe import recipe_api
+from api.quote import quote_api
 from model.users import initUsers
 from model.titanic import initTitanic
 from model.heart import initHeart
@@ -25,17 +26,18 @@ from model.strokes import initStroke
 from model.depression import initDepression
 from model.therapies import initTherapies
 from model.recipes import initRecipes
+from model.quotes import initQuotes
 from model.hotlines import initHotlines
 from projects.projects import app_projects
 
 # Initialize the SQLAlchemy object to work with the Flask app instance
 db.init_app(app)
 
-class Quote(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    quote_text = db.Column(db.String(255), nullable=False)
-    quote_author = db.Column(db.String(100), nullable=False)
-    user_opinion = db.Column(db.Text, nullable=False)
+#class Quote(db.Model):
+#    id = db.Column(db.Integer, primary_key=True)
+#    quote_text = db.Column(db.String(255), nullable=False)
+#    quote_author = db.Column(db.String(100), nullable=False)
+#    user_opinion = db.Column(db.Text, nullable=False)
 
 
 # Register URIs
@@ -48,6 +50,7 @@ app.register_blueprint(therapy_api)
 app.register_blueprint(hotline_api)
 app.register_blueprint(recipe_api)
 app.register_blueprint(app_projects)
+app.register_blueprint(quote_api)
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
@@ -96,8 +99,8 @@ def generate_data():
     initHeart()
     initDepression()
     initRecipes()
+    initQuotes()
     initHotlines()
-
 
 
 # Register the custom command group with the Flask application
