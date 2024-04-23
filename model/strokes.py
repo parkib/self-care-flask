@@ -38,7 +38,7 @@ class StrokeModel:
         self.stroke_data['Residence_type'] = self.stroke_data['Residence_type'].apply(lambda x: 1 if x == 'Urban' else 0)
         self.stroke_data['smoking_status'] = self.stroke_data['smoking_status'].apply(lambda x: 1 if x == 'smoked' else 0)
         # Drop rows with missing values
-        # self.stroke_data.dropna(subset=['embarked'], inplace=True)
+        self.stroke_data.dropna(subset=['embarked'], inplace=True)
         self.stroke_data.dropna(inplace=True)
 
     def _train(self):
