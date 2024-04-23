@@ -18,7 +18,6 @@ from api.heart import heart_api
 from api.therapy import therapy_api
 from api.hotline import hotline_api
 from api.recipe import recipe_api
-from api.hotline import hotline_api
 from model.users import initUsers
 from model.titanic import initTitanic
 from model.heart import initHeart
@@ -48,7 +47,6 @@ app.register_blueprint(predict_api)
 app.register_blueprint(therapy_api)
 app.register_blueprint(hotline_api)
 app.register_blueprint(recipe_api)
-app.register_blueprint(hotline_api)
 app.register_blueprint(app_projects)
 
 @app.errorhandler(404)  # catch for URL not found
