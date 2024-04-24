@@ -2,19 +2,23 @@ import json, jwt
 from flask import Blueprint, make_response, request, jsonify, current_app, Response
 from flask_restful import Api, Resource, reqparse
 from datetime import datetime
+from auth_middleware import token_required
 from flask_cors import CORS
 
 from model.quotes import Quote
 
-quote_api = Blueprint('quote_api', __name__, url_prefix='/api/quotes')
+quote_api = Blueprint('quote_api', __name__,
+                   url_prefix='/api/quotes')
+
+# API docs https://flask-restful.readthedocs.io/en/latest/api.html
 api = Api(quote_api)
-#CORS(quote_api)
+CORS(quote_api)
 
 class QuoteAPI:
     class _CRUD(Resource):
         def post(self):
             body = request.get_json()
-            quotename = body.get('quote')
+            quotename = body.get('quotename')
             quoteauthor = body.get('quoteauthor')
             opinion = body.get('opinion')
             quote = Quote(quotename=quotename, quoteauthor=quoteauthor, opinion=opinion)
@@ -36,14 +40,27 @@ class QuoteAPI:
             opinion = body.get('opinion')
             new_quote = Quote(quotename=quotename, quoteauthor=quoteauthor, opinion=opinion)
             quote = new_quote.create()
-            return jsonify(quote.read())
+            # return jsonify(quote.read())
+            return jsonify({
+                "id": 1,
+                "quotename": "c1",
+                "quoteauthor": "c1",
+                "opinion": "c1"
+                })
 
     class _Read(Resource):
         def get(self):
-            quotes = Quote.query.all()
-            json_ready = [quote.read() for quote in quotes]
-            return jsonify(json_ready)
+            # quotes = Quote.query.all()
+            # json_ready = [quote.read() for quote in quotes]
+            # return jsonify(json_ready)
+            return jsonify({
+                "id": 1,
+                "quotename": "c1",
+                "quoteauthor": "c1",
+                "opinion": "c1"
+                })
 
-api.add_resource(QuoteAPI._CRUD, '/write')
-api.add_resource(QuoteAPI._Create, '/create')
-api.add_resource(QuoteAPI._Read, '/read')
+    # building RESTapi endpoint
+    api.add_resource(_CRUD, '/')
+    api.add_resource(_Read, '/read')
+    api.add_resource(_Create, '/build')

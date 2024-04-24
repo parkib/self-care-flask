@@ -18,6 +18,7 @@ from api.heart import heart_api
 from api.therapy import therapy_api
 from api.hotline import hotline_api
 from api.recipe import recipe_api
+from api.qtee import qt1_api
 from api.quote import quote_api
 from model.users import initUsers
 from model.titanic import initTitanic
@@ -27,6 +28,7 @@ from model.depression import initDepression
 from model.therapies import initTherapies
 from model.recipes import initRecipes
 from model.quotes import initQuotes
+from model.qtees import initqt1s
 from model.hotlines import initHotlines
 from projects.projects import app_projects
 
@@ -48,9 +50,10 @@ app.register_blueprint(heart_api)
 app.register_blueprint(predict_api)
 app.register_blueprint(therapy_api)
 app.register_blueprint(hotline_api)
+app.register_blueprint(quote_api)
+app.register_blueprint(qt1_api)
 app.register_blueprint(recipe_api)
 app.register_blueprint(app_projects)
-app.register_blueprint(quote_api)
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
@@ -83,9 +86,9 @@ def save_settings():
 def before_request():
     # Check if the request came from a specific origin
     allowed_origin = request.headers.get('Origin')
-    if allowed_origin in ['http://localhost:4100', 'http://127.0.0.1:4100', 'https://jplip.github.io']:
+    if allowed_origin in ['http://127.0.0.1:4100', 'http://127.0.0.1:4100', 'https://jplip.github.io']:
         cors._origins = allowed_origin
-
+        
 # Create an AppGroup for custom commands
 custom_cli = AppGroup('custom', help='Custom commands')
 
@@ -101,6 +104,7 @@ def generate_data():
     initRecipes()
     initQuotes()
     initHotlines()
+    initqt1s()
 
 
 # Register the custom command group with the Flask application

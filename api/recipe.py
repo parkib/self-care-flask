@@ -67,7 +67,7 @@ class RecipeAPI:
             new_recipe = Recipe(recipename=recipename, healthyingredients=healthyingredients, recipesteps=recipesteps, difficulty=difficulty)
             recipe = new_recipe.create()
             # success returns json of user
-            return jsonify(recipe.read()) 
+            return jsonify(new_recipe.read()) 
 
 
             

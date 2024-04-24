@@ -8,8 +8,6 @@ from __init__ import app, db
 from sqlalchemy.exc import IntegrityError
 from werkzeug.security import generate_password_hash, check_password_hash
 
-
-
 class Recipe(db.Model):
     __tablename__ = 'recipes'  # table name is plural, class name is singular
     # Define the User schema with "vars" from object

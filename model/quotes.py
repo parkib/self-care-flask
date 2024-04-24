@@ -15,7 +15,7 @@ class Quote(db.Model):
     # Define the User schema with "vars" from object
     id = db.Column(db.Integer, primary_key=True)
     _quotename = db.Column(db.String(255), unique=False, nullable=False)
-    _quoteauthor = db.Column(db.String(255), unique=True, nullable=False)
+    _quoteauthor = db.Column(db.String(255), unique=False, nullable=False)
     _opinion = db.Column(db.String(255), unique=False, nullable=False)
     # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
     # constructor of a User object, initializes the instance variables within object (self)
@@ -65,8 +65,7 @@ class Quote(db.Model):
             "id": self.id,
             "quotename": self.quotename,
             "quoteauthor": self.quoteauthor,
-            "opinion": self.opinion,
-            
+            "opinion": self.opinion            
         }
     
 
@@ -87,5 +86,5 @@ def initQuotes():
             except IntegrityError:
                 '''fails with bad or duplicate data'''
                 db.session.remove()
-                print(f"Records exist, duplicate email, or error: {quote}")
+                print(f"Records exist, duplicate email, or error: {quote.quoteauthor}")
             
