@@ -213,7 +213,7 @@ class UserAPI:
             for user in users:
                 if user.uid == data["_uid"]:    
                     print(data["_uid"])
-                    user.update("", "", "", user._diary + "///" + diary, "", "")
+                    user.update("", "", "", user._diary + "||" + diary, "", "")
                     return user.read()
 
         #Posting diary data
