@@ -14,20 +14,25 @@ class Hotline(db.Model):
     def __init__(self, name, number):
         self._name = name
         self._number = number
+        
     @property
     def name(self):
         return self._name
+    
     @name.setter
     def name(self, name):
         self._name = name
+        
     @property
     def number(self):
         return self._number
+    
     @number.setter
     def location(self, number):
         self._number = number
     def __str__(self):
         return json.dumps(self.read())
+    
     def create(self):
         try:
             db.session.add(self)
@@ -36,12 +41,14 @@ class Hotline(db.Model):
         except IntegrityError:
             db.session.remove()
             return None
+        
     def read(self):
         return {
             "id": self.id,
             "name": self.name,
             "number": self.number,
         }
+        
 def initHotlines():
     with app.app_context():
         db.create_all()
@@ -52,9 +59,9 @@ def initHotlines():
         R5 = Hotline(name="Compulsive Gambling Hotline", number="1-410-332-0402"),
         R6 = Hotline(name="Homeless", number="1-800-231-6946"),
         R7 = Hotline(name="American Family Housing", number="1-888-600-4357"),
-        ## Hotline(name="GriefShare", number="1-800-395-5755"),
-        ## Hotline(name="United STates Missing Children Hotline", number="1-800-235-3525"),
-        hotlines = [R1, R2, R3, R4, R5, R6, R7]
+        R8 = Hotline(name="GriefShare", number="1-800-395-5755"),
+        R9 = Hotline(name="United STates Missing Children Hotline", number="1-800-235-3525"),
+        hotlines = [R1, R2, R3, R4, R5, R6, R7, R8, R9]
         for hotline in hotlines:
             try:
                 hotline.create()
