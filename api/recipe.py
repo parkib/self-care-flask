@@ -26,17 +26,17 @@ class RecipeAPI:
             ''' Avoid garbage in, error checking '''
             # validate name
             recipename = body.get('recipename')
-            #if recipename is None or len(recipename) < 2:
-             #   return {'message': f'Name is missing, or is less than 2 characters'}, 400
+            if recipename is None or len(recipename) < 2:
+               return {'message': f'Name is missing, or is less than 2 characters'}, 400
             # validate uid
             healthyingredients = body.get('healthyingredients')
-            #if healthyingredients is None or len(healthyingredients) < 2:
-               # return {'message': f'User ID is missing, or is less than 2 characters'}, 400
+            if healthyingredients is None or len(healthyingredients) < 2:
+                return {'message': f'User ID is missing, or is less than 2 characters'}, 400
             # look for password
             recipesteps = body.get('recipesteps')
             difficulty = body.get('difficulty')
-            #if difficulty is None or len(difficulty) < 2:
-             #   return {'message': f'User ID is missing, or is less than 2 characters'}, 400
+            if difficulty is None or len(difficulty) < 2:
+                return {'message': f'User ID is missing, or is less than 2 characters'}, 400
             recipe = Recipe(recipename=recipename, healthyingredients=healthyingredients, recipesteps=recipesteps, difficulty = difficulty)
             ''' Additional garbage error checking '''
                 
