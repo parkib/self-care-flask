@@ -33,7 +33,7 @@ class Quote(db.Model):
          
     @property
     def quoteauthor(self):
-        return self.quoteauthor
+        return self._quoteauthor
     @quoteauthor.setter
     def quoteauthor(self, quoteauthor):
         self._quoteauthor = quoteauthor
@@ -65,7 +65,7 @@ class Quote(db.Model):
             "id": self.id,
             "quotename": self.quotename,
             "quoteauthor": self.quoteauthor,
-            "opinion": self.opinion            
+            "opinion": self.opinion,            
         }
     
 
@@ -77,7 +77,8 @@ def initQuotes():
         db.create_all()
         """Tester data for table"""
         quotes = [
-            Quote(quotename="Carpe Diem", quoteauthor="Horous", opinion="Quote's very great!"),
+            Quote(quotename="Carpe Diem", quoteauthor="Horous Magic", opinion="Quote is very great!"),
+            Quote(quotename="It is a great day", quoteauthor="Albert Dias", opinion="I know it is a great day")
         ]
         """Builds sample user/note(s) data"""
         for quote in quotes:

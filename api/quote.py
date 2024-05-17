@@ -40,25 +40,25 @@ class QuoteAPI:
             opinion = body.get('opinion')
             new_quote = Quote(quotename=quotename, quoteauthor=quoteauthor, opinion=opinion)
             quote = new_quote.create()
-            # return jsonify(quote.read())
-            return jsonify({
-                "id": 1,
-                "quotename": "c1",
-                "quoteauthor": "c1",
-                "opinion": "c1"
-                })
+            return jsonify(quote.read())
+            # return jsonify({
+            #     "id": 1,
+            #     "quotename": "c1",
+            #     "quoteauthor": "c1",
+            #     "opinion": "c1"
+            #     })
 
     class _Read(Resource):
         def get(self):
-            # quotes = Quote.query.all()
-            # json_ready = [quote.read() for quote in quotes]
-            # return jsonify(json_ready)
-            return jsonify({
-                "id": 1,
-                "quotename": "c1",
-                "quoteauthor": "c1",
-                "opinion": "c1"
-                })
+            quotes = Quote.query.all()
+            json_ready = [quote.read() for quote in quotes]
+            return jsonify(json_ready)
+            # return jsonify({
+            #     "id": 1,
+            #     "quotename": "c1",
+            #     "quoteauthor": "c1",
+            #     "opinion": "c1"
+            #     })
 
     # building RESTapi endpoint
     api.add_resource(_CRUD, '/')
