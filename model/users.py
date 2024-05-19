@@ -18,16 +18,20 @@ class User(db.Model):
     _diary = db.Column(db.String(255))
     _exercise = db.Column(db.JSON, nullable=True)
     _sleep = db.Column(db.JSON, nullable=True)
+    _profile = db.Column(db.JSON, nullable=True)
+    _image_path = db.Column(db.JSON, nullable=True)
     _role = db.Column(db.String(255), unique=False, nullable=False)
     # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
     # constructor of a User object, initializes the instance variables within object (self)
-    def __init__(self, name, uid, password="123qwerty", diary='', exercise='', sleep='', role="user"):
+    def __init__(self, name, uid, password="123qwerty", diary='', exercise='', sleep='', profile = '', image_path = '',  role="user"):
         self._name = name    # variables with self prefix become part of the object,
         self._uid = uid
         self.set_password(password)
         self._exercise = exercise
         self._sleep = sleep
         self._diary = diary
+        self._profile = profile
+        self._image_path = image_path
         self._role = role
     # a name getter method, extracts name from object
     @property
@@ -38,6 +42,22 @@ class User(db.Model):
         self._role = role
     def is_admin(self):
         return self._role == "Admin"
+    
+    @property
+    def profile(self):
+        return self._profile
+
+    @profile.setter
+    def profile(self, profile):
+        self._profile = profile
+
+    @property
+    def image_path(self):
+        return self._image_path
+
+    @image_path.setter
+    def image_path(self, image_path):
+        self._image_path = image_path
     
     @property
     def sleep(self):
@@ -116,11 +136,13 @@ class User(db.Model):
             "diary": self.diary,
             "sleep": self.sleep,
             "exercise": self.exercise,
+            "profile": self.profile,
+            "image_path": self.image_path,
             "role": self.role
         }
     # CRUD update: updates user name, password, phone
     # returns self
-    def update(self, name="", uid="", password="", diary="", sleep = "", exercise = ""):
+    def update(self, name="", uid="", password="", diary="", sleep = "", exercise = "", profile = "", image_path = ""):
         """only updates values with length"""
         if len(name) > 0:
             self.name = name
@@ -134,6 +156,10 @@ class User(db.Model):
             self.sleep = sleep
         if len(exercise) > 0:
             self.exercise = exercise
+        if len(profile) > 0:
+            self.profile = profile
+        if len(image_path) > 0:
+            self.image_path = image_path
         db.session.commit()
         return self
     # CRUD delete: remove self
@@ -147,6 +173,7 @@ class User(db.Model):
         if new_name is not None:
             self.name = new_name
             db.session.commit()
+            
 """Database Creation and Testing """
 # Builds working data for testing
 def initUsers():
@@ -154,73 +181,109 @@ def initUsers():
         with app.app_context():
             # Create database tables if they don't exist
             db.create_all()
-
             # Sample user data
-         
-                # Add other user data as needed
             users_data = [
-            {
-                "name": "Justin",
-                "uid": "jst",
-                "password": "123jst",
-                "role": "admin",
-                "exercise": {
-                    "duration": "5",
-                    "exerciseDate": "2024-04-05",
-                    "exerciseType": "Biking"
+                {
+                    "name": "Justin",
+                    "uid": "jst",
+                    "password": "123jst",
+                    "role": "admin",
+                    "profile": {
+                        "age": 25,
+                        "gender": "male",
+                        "bio": "Love biking and outdoor activities.",
+                        "exerciseGoals": "5 times a week",
+                        "sleepGoals": "7 hours per night"
+                    },
+                    "exercise": {
+                        "duration": "5",
+                        "exerciseDate": "2024-04-05",
+                        "exerciseType": "Biking"
+                    },
+                    "sleep": {
+                        "quality": "good",
+                        "sleepDate": "2024-04-08",
+                        "sleepHours": "5"
+                    },
+                    "diary": "I went to school today.",
+                    "image_path": "/path/to/image.jpg"
                 },
-                "sleep": {
-                    "quality": "good",
-                    "sleepDate": "2024-04-08",
-                    "sleepHours": "5"
+                {
+                    "name": "Bella",
+                    "uid": "bell",
+                    "password": "123bell",
+                    "role": "admin",
+                    "profile": {
+                        "age": 22,
+                        "gender": "female",
+                        "bio": "Avid runner and health enthusiast.",
+                        "exerciseGoals": "Run daily",
+                        "sleepGoals": "8 hours per night"
+                    },
+                    "exercise": {
+                        "duration": "4",
+                        "exerciseDate": "2024-04-05",
+                        "exerciseType": "Running"
+                    },
+                    "sleep": {
+                        "quality": "excellent",
+                        "sleepDate": "2024-04-08",
+                        "sleepHours": "8"
+                    },
+                    "diary": "My favorite color is blue.",
+                    "image_path": "/path/to/bella_image.jpg"
                 },
-                "diary": "I went to school today."
-            },
-            {
-                "name": "Bella",
-                "uid": "bell",
-                "password": "123bell",
-                "role": "admin",
-                "exercise": {
-                    "duration": "5",
-                    "exerciseDate": "2024-04-05",
-                    "exerciseType": "Biking"
+                {
+                    "name": "Lindsay",
+                    "uid": "lct",
+                    "password": "123lin",
+                    "role": "admin",
+                    "profile": {
+                        "age": 28,
+                        "gender": "female",
+                        "bio": "Math teacher and yoga lover.",
+                        "exerciseGoals": "Yoga every morning",
+                        "sleepGoals": "6 hours per night"
+                    },
+                    "exercise": {
+                        "duration": "1",
+                        "exerciseDate": "2024-04-05",
+                        "exerciseType": "Yoga"
+                    },
+                    "sleep": {
+                        "quality": "good",
+                        "sleepDate": "2024-04-08",
+                        "sleepHours": "6"
+                    },
+                    "diary": "My favorite subject is math.",
+                    "image_path": "/path/to/lindsay_image.jpg"
                 },
-                "sleep": {
-                    "quality": "good",
-                    "sleepDate": "2024-04-08",
-                    "sleepHours": "5"
-                },
-                "diary": "My favorite color is blue."
-            },
-            {
-                "name": "Lindsay",
-                "uid": "lct",
-                "password": "123lin",
-                "role": "admin",
-                "exercise": {
-                    "duration": "5",
-                    "exerciseDate": "2024-04-05",
-                    "exerciseType": "Biking"
-                },
-                "sleep": {
-                    "quality": "good",
-                    "sleepDate": "2024-04-08",
-                    "sleepHours": "5"
-                },
-                "diary": "My favorite subject is math."
-            },
-            {
-                "name": "Jake",
-                "uid": "test",
-                "password": "123test",
-                "exercise": {
-                    "duration": "5",
-                    "exerciseDate": "2024-04-05",
-                    "exerciseType": "Biking"
+                {
+                    "name": "Jake",
+                    "uid": "test",
+                    "password": "123test",
+                    "role": "user",
+                    "profile": {
+                        "age": 30,
+                        "gender": "male",
+                        "bio": "Software developer and tech enthusiast.",
+                        "exerciseGoals": "Gym 3 times a week",
+                        "sleepGoals": "7 hours per night"
+                    },
+                    "exercise": {
+                        "duration": "3",
+                        "exerciseDate": "2024-04-05",
+                        "exerciseType": "Weightlifting"
+                    },
+                    "sleep": {
+                        "quality": "average",
+                        "sleepDate": "2024-04-08",
+                        "sleepHours": "7"
+                    },
+                    "diary": "Excited to start this new project.",
+                    "image_path": "/path/to/jake_image.jpg"
                 }
-            }
-        ]
+            ]
             # Create sample users
             for user_data in users_data:
                 user = User(**user_data)

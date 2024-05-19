@@ -30,7 +30,7 @@ class UserAPI:
             # look for password
             password = body.get('password')
             uo = User(name=name, #user name
-                        uid=uid, diary = "", sleep="", exercise="")
+                        uid=uid, diary = "", sleep="", exercise="", profile="", image_path = "")
             ''' Additional garbage error checking '''
             # set password if provided
             if password is not None:
@@ -137,7 +137,7 @@ class UserAPI:
             name = body.get('name')
             uid = body.get('uid')
             password = body.get('password')
-            new_user = User(name=name, uid=uid, password=password, diary = '', exercise='', sleep='')
+            new_user = User(name=name, uid=uid, password=password, diary = '', exercise='', sleep='', profile='', image_path = '')
             user = new_user.create()
             # success returns json of user
             if user:
@@ -160,15 +160,31 @@ class UserAPI:
                 return {'message': 'Id not found.'}, 400
             user = User.query.filter_by(id=user_id).first()  # Use filter_by to query by UID
             if user:
-                if 'exercise' and 'sleep'   in body:
-                     user.exercise = body['exercise']
-                     user.update()
-                     user.sleep = body['sleep']
-                     user.update() 
-                     user.update() 
-                     return user.read()
-                return {'message': 'You may only update sleep or exercise'}, 400
-            return {'message': 'User not found.'}, 404    
+                updated_fields = False
+
+                if 'exercise' in body:
+                    user.exercise = body['exercise']
+                    updated_fields = True
+
+                if 'sleep' in body:
+                    user.sleep = body['sleep']
+                    updated_fields = True
+
+                if 'profile' in body:
+                    user.profile = body['profile']
+                    updated_fields = True
+
+                if 'image_path' in body:
+                    user.image_path = body['image_path']
+                    updated_fields = True
+
+                if updated_fields:
+                    user.update()
+                    return user.read()
+                else:
+                    return {'message': 'No valid fields to update.'}, 400
+
+            return {'message': 'User not found.'}, 404
         def get(self, user_id):
             user = User.query.filter_by(id=user_id).first()
             if user:
