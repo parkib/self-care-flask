@@ -4,7 +4,6 @@ import threading
 from flask import render_template,request, jsonify  # import render_template from "public" flask libraries
 from flask.cli import AppGroup
 
-
 # import "packages" from "this" project
 from __init__ import app, db, cors  # Definitions initialization
 
@@ -82,12 +81,6 @@ def save_settings():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-@app.before_request
-def before_request():
-    # Check if the request came from a specific origin
-    allowed_origin = request.headers.get('Origin')
-    if allowed_origin in ['http://127.0.0.1:4100', 'http://127.0.0.1:4100', 'https://jplip.github.io']:
-        cors._origins = allowed_origin
         
 # Create an AppGroup for custom commands
 custom_cli = AppGroup('custom', help='Custom commands')
