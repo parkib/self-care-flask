@@ -1,0 +1,32 @@
+{
+    "items": [
+        {
+            "genre": {
+                "pop": {
+                    "id": 100,
+                    "song": "ETA",
+                    "artist": "NewJeans",
+                    "time": 151,
+                    "audio": {
+                        "medium": "https://i.scdn.co/image/ab67616d00001e020744690248ef3ba7b776ea7b"
+                    },
+                    "iconUrls": {
+                        "medium": "https://i.scdn.co/image/ab67616d00001e020744690248ef3ba7b776ea7b"
+                    }
+                },
+                "rock": {
+                    "id": 101,
+                    "song": "How Can I Say",
+                    "artist": "Day 6",
+                    "time": 201,
+                    "audio": {
+                        "medium": "https://i.scdn.co/image/ab67616d00001e02877b49fcef4d02bb0bc0adc8"
+                    },
+                    "iconUrls": {
+                        "medium": "https://i.scdn.co/image/ab67616d00001e02877b49fcef4d02bb0bc0adc8"
+                    }
+                }
+            }
+        }
+    ]
+}
