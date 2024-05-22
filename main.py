@@ -19,6 +19,7 @@ from api.hotline import hotline_api
 from api.recipe import recipe_api
 from api.qtee import qt1_api
 from api.quote import quote_api
+from api.kpopapi import kpop_api
 from model.users import initUsers
 from model.titanic import initTitanic
 from model.heart import initHeart
@@ -53,6 +54,7 @@ app.register_blueprint(quote_api)
 app.register_blueprint(qt1_api)
 app.register_blueprint(recipe_api)
 app.register_blueprint(app_projects)
+app.register_blueprint(kpop_api)
 
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
