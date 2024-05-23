@@ -24,6 +24,7 @@ def beautify_json_data(json_file_path):
             beautified_item = {
                 "id": item.get("id", 0),
                 "song": item.get("song", ""),
+                "album": item.get("album", ""),
                 "artist": item.get("artist", ""),
                 "genre": item.get("genre", ""),
                 "time": item.get("time", 0),
