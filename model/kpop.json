@@ -1,0 +1,46 @@
+{
+    "items": [
+        {
+            "genre": "Pop",
+            "id": 10000,
+            "song": "ETA",
+            "artist": "NewJeans",
+            "album": "ETA",
+            "time": 151,
+            "audioUrls": {
+                "audio": "https://blank1"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d00001e020744690248ef3ba7b776ea7b"
+            }
+        },
+        {
+            "genre": "Pop",
+            "id": 10001,
+            "song": "MIROH",
+            "album": "Clé 1 : MIROH",
+            "artist": "Stray Kids",
+            "time": 207,
+            "audioUrls": {
+                "audio": "https://blank2"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b273cbb25c0de45e6a6ded073802"
+            }
+        },
+        {
+            "genre": "Rock",
+            "id": 20000,
+            "song": "How Can I Say",
+            "album": "Sunrise",
+            "artist": "Day 6",
+            "time": 201,
+            "audioUrls": {
+                "audio": "https://blank3"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d00001e02877b49fcef4d02bb0bc0adc8"
+            }
+        }
+    ]
+}
