@@ -43,17 +43,17 @@
             }
         },
         {
-            "genre": "Pop",
+            "genre": "R&B",
             "id": 20000,
-            "song": "MY BAG",
-            "album": "I Never Die",
-            "artist": "(G)I-DLE",
-            "time": 160,
+            "song": "The Long Night",
+            "album": "The Long Night",
+            "artist": "Seori, GIRIBOY",
+            "time": 210,
             "audioUrls": {
                 "audio": "https://blank4"
             },
             "iconUrls": {
-                "icon": "https://i.scdn.co/image/ab67616d0000b273c7b6b2976e38a802eebff046"
+                "icon": "https://i.scdn.co/image/ab67616d0000b2733879d8f60dedf72280ad331a"
             }
         },
         {
@@ -103,7 +103,7 @@
             "id": 20000,
             "song": "Feel Special",
             "album": "Feel Special",
-            "artist": "Twice",
+            "artist": "TWICE",
             "time": 206,
             "audioUrls": {
                 "audio": "https://blank7"
@@ -152,6 +152,76 @@
             },
             "iconUrls": {
                 "icon": "https://i.scdn.co/image/ab67616d0000b2735c1dca4c993850471d5d8f14"
+            }
+        },
+        {
+            "genre": "Jazz/Pop",
+            "id": 20000,
+            "song": "Jazz Bar",
+            "album": "1st Album [Dystopia: The Tree of Language]",
+            "artist": "Dreamcatcher",
+            "time": 214,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b27319224fae0aa53341020f5b12"
+            }
+        },
+        {
+            "genre": "Jazz/Pop",
+            "id": 20000,
+            "song": "Jazz Bar",
+            "album": "1st Album [Dystopia: The Tree of Language]",
+            "artist": "Dreamcatcher",
+            "time": 214,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b27319224fae0aa53341020f5b12"
+            }
+        },
+        {
+            "genre": "R&B/Pop",
+            "id": 20000,
+            "song": "Nothing",
+            "album": "Midas Touch",
+            "artist": "Kiss of Life",
+            "time": 210,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b27307568782625b85282541394b"
+            }
+        },
+        {
+            "genre": "R&B",
+            "id": 20000,
+            "song": "Forever Only",
+            "album": "Forever Only - SM STATION: NCT LAB",
+            "artist": "JAEHYUN",
+            "time": 195,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b2737684475e021f73ca153b23c4"
+            }
+        },
+        {
+            "genre": "R&B",
+            "id": 20000,
+            "song": "Doughnut",
+            "album": "Doughnut",
+            "artist": "TWICE",
+            "time": 263,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b273335c759b5c4f08f82e98dcff"
             }
         }
     ]
