@@ -266,4 +266,3 @@ class UserAPI:
     api.add_resource(_Diary, '/diary')
     api.add_resource(_UD, '/<int:user_id>') 
     api.add_resource(_Logout, '/logout') 
-    api.add_resource(_Bio, '/bio') 
