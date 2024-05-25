@@ -5,9 +5,11 @@ from flask import render_template,request, jsonify  # import render_template fro
 from flask.cli import AppGroup
 
 # import "packages" from "this" project
-from __init__ import app, db, cors  # Definitions initialization
+from __init__ import app, db, login_manager #cors  # Definitions initialization
 
 # Import necessary modules from the project
+from flask import redirect, render_template, request, url_for  # import render_template from "public" flask libraries
+from flask_login import login_user, logout_user
 from __init__ import app, db
 from api.user import user_api
 from api.titanic import titanic_api
@@ -20,7 +22,7 @@ from api.recipe import recipe_api
 from api.qtee import qt1_api
 from api.quote import quote_api
 from api.kpopapi import kpop_api
-from model.users import initUsers
+from model.users import initUsers, User
 from model.titanic import initTitanic
 from model.heart import initHeart
 from model.strokes import initStroke
@@ -56,6 +58,11 @@ app.register_blueprint(recipe_api)
 app.register_blueprint(app_projects)
 app.register_blueprint(kpop_api)
 
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.filter_by(_uid=user_id).first()
+
 @app.errorhandler(404)  # catch for URL not found
 def page_not_found(e):
     # note that we set the 404 status explicitly
@@ -68,6 +75,28 @@ def index():
 @app.route('/table/')  # connects /stub/ URL to stub() function
 def table():
     return render_template("table.html")
+
+@app.route('/login/')  # connects /table/ URL
+def login_page():
+    return render_template("login.html")
+
+@app.route('/login', methods=['POST'])
+def login():
+    # authenticate user
+    user = User.query.filter_by(username=request.form['username']).first()
+    if user and user.check_password(request.form['password']):
+        login_user(user)
+        return redirect(url_for('index'))
+    else:
+        return 'Invalid username or password'
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
+
+
+
 
 @app.route('/api/users/save_settings', methods=['POST'])  # Define the route for saving settings
 def save_settings():

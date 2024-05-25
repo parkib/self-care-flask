@@ -3,9 +3,10 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 import os
+from flask_login import LoginManager
 
 """
-These object can be used throughout project.
+These object can be used throughout project.python
 1.) Objects from this file can be included in many blueprints
 2.) Isolating these object definitions avoids duplication and circular dependencies
 """
@@ -14,7 +15,10 @@ These object can be used throughout project.
 app = Flask(__name__)
 
 # Initialize Flask-Login object
+login_manager = LoginManager()
+login_manager.init_app(app)
 
+ # Assuming you have a User model defined in models.py
 
 # Allowed servers for cross-origin resource sharing (CORS), these are GitHub Pages and localhost for GitHub Pages testing
 cors = CORS(app, supports_credentials=True, origins=['http://localhost:4100', 'http://127.0.0.1:4100', 'https://jplip.github.io'])
