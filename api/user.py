@@ -106,10 +106,11 @@ class UserAPI:
                         "id": user.id
                         }
                         resp = jsonify(resp_data)
-                        resp.set_cookie("jwt", token,
+                        resp.set_cookie(current_app.config["JWT_TOKEN_NAME"],
+                                token,
                                 max_age=3600,
                                 secure=True,
-                                httponly=False,
+                                httponly=True,
                                 path='/',
                                 samesite='None'
                         )
