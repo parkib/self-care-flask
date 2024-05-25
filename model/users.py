@@ -18,7 +18,7 @@ class User(db.Model):
     _diary = db.Column(db.String(255))
     _exercise = db.Column(db.JSON, nullable=True)
     _sleep = db.Column(db.JSON, nullable=True)
-    _profile = db.Column(db.JSON, nullable=True)
+    _profile = db.Column(db.String(255), nullable=True)
     _image_path = db.Column(db.JSON, nullable=True)
     _role = db.Column(db.String(255), unique=False, nullable=False)
     # Defines a relationship between User record and Notes table, one-to-many (one user to many notes)
@@ -188,13 +188,7 @@ def initUsers():
                     "uid": "jst",
                     "password": "123jst",
                     "role": "admin",
-                    "profile": {
-                        "age": 25,
-                        "gender": "male",
-                        "bio": "Love biking and outdoor activities.",
-                        "exerciseGoals": "5 times a week",
-                        "sleepGoals": "7 hours per night"
-                    },
+                    "profile": "Love biking and outdoor activities.",
                     "exercise": {
                         "duration": "5",
                         "exerciseDate": "2024-04-05",
@@ -213,13 +207,7 @@ def initUsers():
                     "uid": "bell",
                     "password": "123bell",
                     "role": "admin",
-                    "profile": {
-                        "age": 22,
-                        "gender": "female",
-                        "bio": "Avid runner and health enthusiast.",
-                        "exerciseGoals": "Run daily",
-                        "sleepGoals": "8 hours per night"
-                    },
+                    "profile": "Avid runner and health enthusiast.",
                     "exercise": {
                         "duration": "4",
                         "exerciseDate": "2024-04-05",
@@ -238,13 +226,7 @@ def initUsers():
                     "uid": "lct",
                     "password": "123lin",
                     "role": "admin",
-                    "profile": {
-                        "age": 28,
-                        "gender": "female",
-                        "bio": "Math teacher and yoga lover.",
-                        "exerciseGoals": "Yoga every morning",
-                        "sleepGoals": "6 hours per night"
-                    },
+                    "profile": "Math teacher and yoga lover.",
                     "exercise": {
                         "duration": "1",
                         "exerciseDate": "2024-04-05",
@@ -263,13 +245,7 @@ def initUsers():
                     "uid": "test",
                     "password": "123test",
                     "role": "user",
-                    "profile": {
-                        "age": 30,
-                        "gender": "male",
-                        "bio": "Software developer and tech enthusiast.",
-                        "exerciseGoals": "Gym 3 times a week",
-                        "sleepGoals": "7 hours per night"
-                    },
+                    "profile": "Software developer and tech enthusiast.",
                     "exercise": {
                         "duration": "3",
                         "exerciseDate": "2024-04-05",

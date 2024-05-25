@@ -243,6 +243,20 @@ class UserAPI:
             for user in users:
                 if user.uid == data["_uid"]:    
                     return user.diary
+    class _Bio(Resource):
+        #retrieving data for all users in database
+        def get(self):
+            token = request.cookies.get("jwt")
+            data = jwt.decode(token, 
+                            current_app.config["SECRET_KEY"], 
+                            algorithms=["HS256"])
+            users = User.query.all()
+            for user in users:
+                if user.uid == data["_uid"]:    
+                    jsonData = user.profile
+                    print(jsonData)
+                    return user.profile
+            return jsonify(jsonData)
 
             
     # building RESTapi endpoint
@@ -252,3 +266,4 @@ class UserAPI:
     api.add_resource(_Diary, '/diary')
     api.add_resource(_UD, '/<int:user_id>') 
     api.add_resource(_Logout, '/logout') 
+    api.add_resource(_Bio, '/bio') 

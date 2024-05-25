@@ -63,4 +63,4 @@ class QuoteAPI:
     # building RESTapi endpoint
     api.add_resource(_CRUD, '/')
     api.add_resource(_Read, '/read')
-    api.add_resource(_Create, '/build')
+    api.add_resource(_Create, '/make')

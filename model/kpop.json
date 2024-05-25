@@ -1,31 +1,227 @@
 {
     "items": [
         {
-            "genre": {
-                "pop": {
-                    "id": 100,
-                    "song": "ETA",
-                    "artist": "NewJeans",
-                    "time": 151,
-                    "audio": {
-                        "medium": "https://i.scdn.co/image/ab67616d00001e020744690248ef3ba7b776ea7b"
-                    },
-                    "iconUrls": {
-                        "medium": "https://i.scdn.co/image/ab67616d00001e020744690248ef3ba7b776ea7b"
-                    }
-                },
-                "rock": {
-                    "id": 101,
-                    "song": "How Can I Say",
-                    "artist": "Day 6",
-                    "time": 201,
-                    "audio": {
-                        "medium": "https://i.scdn.co/image/ab67616d00001e02877b49fcef4d02bb0bc0adc8"
-                    },
-                    "iconUrls": {
-                        "medium": "https://i.scdn.co/image/ab67616d00001e02877b49fcef4d02bb0bc0adc8"
-                    }
-                }
+            "genre": "Pop",
+            "id": 10000,
+            "song": "ETA",
+            "artist": "NewJeans",
+            "album": "Get Up",
+            "time": 151,
+            "audioUrls": {
+                "audio": "https://blank1"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d00001e020744690248ef3ba7b776ea7b"
+            }
+        },
+        {
+            "genre": "Pop",
+            "id": 10001,
+            "song": "MIROH",
+            "album": "Clé 1 : MIROH",
+            "artist": "Stray Kids",
+            "time": 207,
+            "audioUrls": {
+                "audio": "https://blank2"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b273cbb25c0de45e6a6ded073802"
+            }
+        },
+        {
+            "genre": "Rock",
+            "id": 20000,
+            "song": "How Can I Say",
+            "album": "Sunrise",
+            "artist": "Day 6",
+            "time": 201,
+            "audioUrls": {
+                "audio": "https://blank3"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d00001e02877b49fcef4d02bb0bc0adc8"
+            }
+        },
+        {
+            "genre": "R&B",
+            "id": 20000,
+            "song": "The Long Night",
+            "album": "The Long Night",
+            "artist": "Seori, GIRIBOY",
+            "time": 210,
+            "audioUrls": {
+                "audio": "https://blank4"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b2733879d8f60dedf72280ad331a"
+            }
+        },
+        {
+            "genre": "Pop",
+            "id": 20000,
+            "song": "Left Right",
+            "album": "Shooting Star",
+            "artist": "XG",
+            "time": 208,
+            "audioUrls": {
+                "audio": "https://blank5"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d00001e023f40fd20e67b865fca5391a3"
+            }
+        },
+        {
+            "genre": "Pop",
+            "id": 20000,
+            "song": "Me Gustas Tu",
+            "album": "2nd Mini Album 'Flower Bud'",
+            "artist": "GFRIEND",
+            "time": 219,
+            "audioUrls": {
+                "audio": "https://blank6"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b273e605c926b681c3983d4e9c6b"
+            }
+        },
+        {
+            "genre": "Pop",
+            "id": 20000,
+            "song": "Bye My Neverland",
+            "album": "Kiss of Life",
+            "artist": "Kiss of Life",
+            "time": 219,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b2732ff7c76b0790cd3ad63cfc0c"
+            }
+        },
+        {
+            "genre": "Pop",
+            "id": 20000,
+            "song": "Feel Special",
+            "album": "Feel Special",
+            "artist": "TWICE",
+            "time": 206,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b27349b81808fcdaeeb55bef59d1"
+            }
+        },
+        {
+            "genre": "R&B",
+            "id": 20000,
+            "song": "Intro: Singularity",
+            "album": "Love Yourself: Tear",
+            "artist": "BTS",
+            "time": 196,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d00001e028fbcf6544ff02a8959a81781"
+            }
+        },
+        {
+            "genre": "Pop",
+            "id": 20000,
+            "song": "Perfect Night",
+            "album": "Perfect Night",
+            "artist": "Le Sserafim",
+            "time": 158,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b2735e352f6eccf8cb96d0b247cc"
+            }
+        },
+        {
+            "genre": "Pop",
+            "id": 20000,
+            "song": "STEREOTYPE",
+            "album": "STEREOTYPE",
+            "artist": "STAYC",
+            "time": 191,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b2735c1dca4c993850471d5d8f14"
+            }
+        },
+        {
+            "genre": "Jazz/Pop",
+            "id": 20000,
+            "song": "Jazz Bar",
+            "album": "1st Album [Dystopia: The Tree of Language]",
+            "artist": "Dreamcatcher",
+            "time": 214,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b27319224fae0aa53341020f5b12"
+            }
+        },
+        {
+            "genre": "Jazz/Pop",
+            "id": 20000,
+            "song": "Jazz Bar",
+            "album": "1st Album [Dystopia: The Tree of Language]",
+            "artist": "Dreamcatcher",
+            "time": 214,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b27319224fae0aa53341020f5b12"
+            }
+        },
+        {
+            "genre": "R&B/Pop",
+            "id": 20000,
+            "song": "Nothing",
+            "album": "Midas Touch",
+            "artist": "Kiss of Life",
+            "time": 210,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b27307568782625b85282541394b"
+            }
+        },
+        {
+            "genre": "R&B",
+            "id": 20000,
+            "song": "Forever Only",
+            "album": "Forever Only - SM STATION: NCT LAB",
+            "artist": "JAEHYUN",
+            "time": 195,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b2737684475e021f73ca153b23c4"
+            }
+        },
+        {
+            "genre": "R&B",
+            "id": 20000,
+            "song": "Doughnut",
+            "album": "Doughnut",
+            "artist": "TWICE",
+            "time": 263,
+            "audioUrls": {
+                "audio": "https://blank7"
+            },
+            "iconUrls": {
+                "icon": "https://i.scdn.co/image/ab67616d0000b273335c759b5c4f08f82e98dcff"
             }
         }
     ]
