@@ -27,16 +27,13 @@ def beautify_json_data(json_file_path):
                 "album": item.get("album", ""),
                 "artist": item.get("artist", ""),
                 "genre": item.get("genre", ""),
-                "time": item.get("time", 0),
+                "time": item.get("time", ""),
+                "audio": item.get("audio", ""),
             }
             
             medium_icon_url = item.get("iconUrls", {}).get("icon", "")
             if medium_icon_url:
                 beautified_item["icon"] = medium_icon_url
-
-            medium_audio_url = item.get("audioUrls", {}).get("audio", "")
-            if medium_audio_url:
-                beautified_item["audio"] = medium_audio_url
 
             beautified_data.append(beautified_item)
 
