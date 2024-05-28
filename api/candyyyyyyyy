@@ -36,7 +36,6 @@ class TaskAPI:
             json_ready = [task.read() for task in tasks]
             re = jsonify(json_ready)
             return re
-
     class _Create(Resource):
         def post(self):
             body = request.get_json()
