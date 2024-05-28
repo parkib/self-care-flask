@@ -179,6 +179,11 @@ class UserAPI:
                     user.image_path = body['image_path']
                     updated_fields = True
 
+                if 'diary' in body:
+                    diary = body.get('diary')
+                    user.update("", "", "", user._diary + "||" + diary, "", "", "", "")
+                    updated_fields = True
+
                 if updated_fields:
                     user.update()
                     return user.read()
