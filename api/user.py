@@ -206,31 +206,29 @@ class UserAPI:
                 return {'message': f'Error updating name: {str(e)}'}, 500
     class _Diary(Resource):
         #retrieving data for all users in database
-        def get(self):
-            token = request.cookies.get("jwt")
-            data = jwt.decode(token, 
-                            current_app.config["SECRET_KEY"], 
-                            algorithms=["HS256"])
+        def get(self, user_id):
+            body = request.get_json()
+            user_id = body.get("id")
+            if user_id is None:
+                return {'message': 'Id not found.'}, 400
             users = User.query.all()
             for user in users:
-                if user.uid == data["_uid"]:    
+                if user.uid == user_id:    
                     jsonData = user.diary
                     print(jsonData)
                     return user.diary
             return jsonify(jsonData)
                 
         #Diary api code
-        def put(self):
+        def put(self, user_id):
             body = request.get_json()
-            token = request.cookies.get("jwt")
-            data = jwt.decode(token, 
-                            current_app.config["SECRET_KEY"], 
-                            algorithms=["HS256"])
+            user_id = body.get("id")
+            if user_id is None:
+                return {'message': 'Id not found.'}, 400
             diary = body.get('diary')
             users = User.query.all()
             for user in users:
-                if user.uid == data["_uid"]:    
-                    print(data["_uid"])
+                if user.uid == user_id:    
                     user.update("", "", "", user._diary + "||" + diary, "", "")
                     return user.read()
 
