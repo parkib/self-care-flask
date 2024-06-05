@@ -50,6 +50,8 @@ The Self-Care Project Backend serves as the backend piece of the Self-Care Proje
 
 - **Inspirational Quotes:** APIs for accessing a collection of inspirational quotes.
 
+- **Quote Repository:** APIs for adding new quote entries and ratings, accessing collection of inspirational quotes
+
 - **Machine Learning Predictors:** Endpoints for utilizing machine learning predictors for health insights.
 
 ### Files and Directories
@@ -76,3 +78,4 @@ Contributions to improve the Self-Care Project Backend are welcome! Here's how y
 
 - Submit bug reports or feature requests via GitHub Issues.
 - Fork the repository, make changes, and submit a pull request.
+
